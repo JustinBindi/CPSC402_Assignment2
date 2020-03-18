@@ -74,12 +74,12 @@ ECall.       Exp14 ::= Exp14 "(" [Exp] ")"     ;
 EPostDecr.   Exp14 ::= Exp14 "--"              ;
 EPostIncr.   Exp14 ::= Exp14 "++"              ;
 EQConst.     Exp15 ::= QConst                  ;
-EFalse.      Exp15 ::= "false"                 ;
 ETrue.       Exp15 ::= "true"                  ;
+EFalse.      Exp15 ::= "false"                 ;
 EString.     Exp15 ::= [String]                ;
 EChar.       Exp15 ::= Char                    ;
-EDouble.     Exp15 ::= Double                  ;
 EInt.        Exp15 ::= Integer                 ;
+EDouble.     Exp15 ::= Double                  ;
 EPred.       Exp15 ::= Type Type               ;
 
 
