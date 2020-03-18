@@ -19,7 +19,7 @@ SReturn.     Stm ::= "return" Exp ";" ;
 SReturnVoid. Stm ::= "return" ";" ;
 SWhile.      Stm ::= "while" "(" Exp ")" Stm ;
 SFor.        Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
-SDo.				 Stm ::= "do" Stm "while" "(" Exp ")" ";" ;
+SDo.         Stm ::= "do" Stm "while" "(" Exp ")" ";" ;
 SBlock.      Stm ::= "{" [Stm] "}" ;
 SIf.         Stm ::= "if" "(" Exp ")" Stm ;
 SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
@@ -27,19 +27,20 @@ SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
 
 terminator Stm "" ;
 
-TInt.      Type ::= "int" ;
-TBool.     Type ::= "bool" ;
-TVoid.     Type ::= "void" ;
-TChar.     Type ::= "char" ;
-TDouble.   Type ::= "double" ;
-TQConst.   Type ::= QConst ;
-TCons.	   Type ::= "const" Type ;
-TAlias.    Type ::= "typedef" Type ;
-TAmp.      Type ::= Type "&" ;
+TInt.      Type3 ::= "int" ;
+TBool.     Type3 ::= "bool" ;
+TVoid.     Type3 ::= "void" ;
+TChar.     Type3 ::= "char" ;
+TDouble.   Type3 ::= "double" ;
+TQConst.   Type3 ::= QConst ;
+TCons.	   Type2 ::= "const" Type3 ;
+TAlias.    Type2 ::= "typedef" Type3 ;
+TAmp.      Type1 ::= Type2 "&" ;
 
 separator Type "," ;
+coercions Type 3 ;
 
-QConst.    QConst ::= [Name] ;
+QDef.    QConst ::= [Name] ;
 
 NId.	   Name ::= Id ;
 NBrac.     Name ::= Id "<" [Type] ">" ;
@@ -54,8 +55,8 @@ EString. Exp16  ::= String ;
 EChar.   Exp16  ::= Char ;
 EQConst. Exp16  ::= QConst ;
 
-EArray.  Exp15  ::= Exp15 "[" Exp11 "]" ;
-EFunc.	 Exp15  ::= Exp16 "(" [Exp2] ")" ;
+EArray.  Exp15  ::= Exp16 "[" Exp11 "]" ;
+EFunc.	 Exp15  ::= Exp16 "(" [Exp3] ")" ;
 
 EDot. 	 Exp14  ::= Exp14 "." Exp15 ;
 EPIncr.  Exp14  ::= Exp15 "++" ;
@@ -92,8 +93,7 @@ EOr.     Exp3   ::= Exp3  "||" Exp4 ;
 EAss.    Exp2   ::= Exp2 "=" Exp3 ;
 EAssA.   Exp2   ::= Exp2 "+=" Exp3 ;
 EAssM.   Exp2   ::= Exp2 "-=" Exp3 ;
-
-EIf.     Exp2 ::= Exp2 "?" Exp2 ":" Exp2 ;
+EIf.     Exp2 ::= Exp2 "?" Exp3 ":" Exp3 ;
 
 EThrow.  Exp1  ::= "throw" Exp2 ;
 
@@ -101,11 +101,9 @@ internal ETyped. Exp16 ::= "(" Exp ":" Type ")" ;
 
 coercions Exp 16 ;
 
-separator Exp "," ;
+separator Exp3 "," ;
 
-separator Exp2 "," ;
-
-separator Exp11 "" ;
+separator nonempty Exp11 "" ;
 
 token Id (letter (letter | digit | '_')*) ;
 
