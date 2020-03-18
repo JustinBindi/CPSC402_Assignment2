@@ -1,0 +1,116 @@
+PDefs.   Program ::= [Def] ;
+
+DFunc.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DDecl.	    Def ::= Type [Id] ";" ;
+DUse.	    Def ::= "using" QConst ";" ;
+DStruct.    Def ::= Type Id "(" [Type] ")" ";" ;
+DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
+
+terminator Def "" ;
+
+ADecl.   Arg    ::= Type Id ;
+
+separator Arg "," ;
+
+SExp.        Stm ::= Exp ";" ;
+SDecls.      Stm ::= Type [Id] ";" ;
+SInit.       Stm ::= Type Id "=" Exp ";" ;
+SReturn.     Stm ::= "return" Exp ";" ;
+SReturnVoid. Stm ::= "return" ";" ;
+SWhile.      Stm ::= "while" "(" Exp ")" Stm ;
+SFor.        Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
+SDo.				 Stm ::= "do" Stm "while" "(" Exp ")" ";" ;
+SBlock.      Stm ::= "{" [Stm] "}" ;
+SIf.         Stm ::= "if" "(" Exp ")" Stm ;
+SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
+SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
+
+terminator Stm "" ;
+
+TInt.      Type ::= "int" ;
+TBool.     Type ::= "bool" ;
+TVoid.     Type ::= "void" ;
+TChar.     Type ::= "char" ;
+TDouble.   Type ::= "double" ;
+TQConst.   Type ::= QConst ;
+TCons.	   Type ::= "const" Type ;
+TAlias.    Type ::= "typedef" Type ;
+TAmp.      Type ::= Type "&" ;
+
+separator Type "," ;
+
+QConst.    QConst ::= [Name] ;
+
+NId.	   Name ::= Id ;
+NBrac.     Name ::= Id "<" [Type] ">" ;
+
+separator nonempty Name "::" ;
+
+ETrue.   Exp16  ::= "true" ;
+EFalse.  Exp16  ::= "false" ;
+EInt.    Exp16  ::= Integer ;
+EDouble. Exp16  ::= Double ;
+EString. Exp16  ::= String ;
+EChar.   Exp16  ::= Char ;
+EQConst. Exp16  ::= QConst ;
+
+EArray.  Exp15  ::= Exp15 "[" Exp11 "]" ;
+EFunc.	 Exp15  ::= Exp16 "(" [Exp2] ")" ;
+
+EDot. 	 Exp14  ::= Exp14 "." Exp15 ;
+EPIncr.  Exp14  ::= Exp15 "++" ;
+EPDecr.  Exp14  ::= Exp15 "--" ;
+EDeref.  Exp14  ::= "*" Exp15 ;
+EArrow.  Exp14  ::= Exp14 "->" Exp15 ;
+
+EIncr.   Exp13  ::= "++" Exp14 ;
+EDecr.   Exp13  ::= "--" Exp14 ;
+ENot.    Exp13  ::= "!" Exp14 ;
+
+ETimes.  Exp12  ::= Exp12 "*"  Exp13 ;
+EDiv.    Exp12  ::= Exp12 "/"  Exp13 ;
+EMod.    Exp12  ::= Exp12 "%"  Exp13 ;
+
+EPlus.   Exp11  ::= Exp11 "+"  Exp12 ;
+EMinus.  Exp11  ::= Exp11 "-"  Exp12 ;
+
+ECout.   Exp10 ::= Exp10 "<<" [Exp11] ;
+ECin. 	 Exp10 ::= Exp10 ">>" Exp11 ;
+
+ELt.     Exp9   ::= Exp9  "<"  Exp10 ;
+EGt.     Exp9   ::= Exp9  ">"  Exp10 ;
+ELtEq.   Exp9   ::= Exp9  "<=" Exp10 ;
+EGtEq.   Exp9   ::= Exp9  ">=" Exp10 ;
+
+EEq.     Exp8   ::= Exp8  "==" Exp9 ;
+ENEq.    Exp8   ::= Exp8  "!=" Exp9 ;
+
+EAnd.    Exp4   ::= Exp4  "&&" Exp5 ;
+
+EOr.     Exp3   ::= Exp3  "||" Exp4 ;
+
+EAss.    Exp2   ::= Exp2 "=" Exp3 ;
+EAssA.   Exp2   ::= Exp2 "+=" Exp3 ;
+EAssM.   Exp2   ::= Exp2 "-=" Exp3 ;
+
+EIf.     Exp2 ::= Exp2 "?" Exp2 ":" Exp2 ;
+
+EThrow.  Exp1  ::= "throw" Exp2 ;
+
+internal ETyped. Exp16 ::= "(" Exp ":" Type ")" ;
+
+coercions Exp 16 ;
+
+separator Exp "," ;
+
+separator Exp2 "," ;
+
+separator Exp11 "" ;
+
+token Id (letter (letter | digit | '_')*) ;
+
+separator nonempty Id "," ;
+
+comment "#" ;
+comment "//" ;
+comment "/*" "*/" ;
