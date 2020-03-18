@@ -86,16 +86,15 @@ EChar.       Exp15 ::= Char                    ;
 EInt.        Exp15 ::= Integer                 ;
 EDouble.     Exp15 ::= Double                  ;
 EPred.       Exp15 ::= Type Type               ;
+internal ETyped. Exp15 ::= "(" Exp ":" Type ")" ;
+
 
 coercions Exp 15 ;
 
 separator Exp "," ;
 
 
-separator nonempty Id     ","  ;
-separator nonempty Type   ","  ;
-separator nonempty String ""   ;
-separator nonempty Elmt   "::" ;
+
 
 QuConst. QConst ::= [Elmt] ;
 
@@ -112,6 +111,11 @@ TypQC.   Type ::= QConst  ;
 TypRef. Type ::= Type "&";
 
 token Id (letter (letter | digit | '_')*) ;
+
+separator nonempty Id     ","  ;
+separator nonempty Type   ","  ;
+separator nonempty String ""   ;
+separator nonempty Elmt   "::" ;
 
 
 comment "//"      ;
