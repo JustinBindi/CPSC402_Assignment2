@@ -100,6 +100,11 @@ instance Print AbsCpp.Program where
 instance Print AbsCpp.Def where
   prt i e = case e of
     AbsCpp.DFun type_ id args stms -> prPrec i 0 (concatD [prt 0 type_, prt 0 id, doc (showString "("), prt 0 args, doc (showString ")"), doc (showString "{"), prt 0 stms, doc (showString "}")])
+    AbsCpp.DFunc type_ id args -> prPrec i 0 (concatD [prt 0 type_, prt 0 id, doc (showString "("), prt 0 args, doc (showString ")"), doc (showString ";")])
+    AbsCpp.DUsing qconst -> prPrec i 0 (concatD [doc (showString "using"), prt 0 qconst, doc (showString ";")])
+    AbsCpp.DTypDef type_ id -> prPrec i 0 (concatD [doc (showString "typedef"), prt 0 type_, prt 0 id, doc (showString ";")])
+    AbsCpp.DTypDefVect type_ types id -> prPrec i 0 (concatD [doc (showString "typedef"), prt 0 type_, doc (showString "<"), prt 0 types, doc (showString ">"), prt 0 id])
+    AbsCpp.DDeclVar type_ ids -> prPrec i 0 (concatD [prt 0 type_, prt 0 ids, doc (showString ";")])
   prtList _ [] = concatD []
   prtList _ (x:xs) = concatD [prt 0 x, prt 0 xs]
 
@@ -109,6 +114,9 @@ instance Print [AbsCpp.Def] where
 instance Print AbsCpp.Arg where
   prt i e = case e of
     AbsCpp.ADecl type_ id -> prPrec i 0 (concatD [prt 0 type_, prt 0 id])
+    AbsCpp.AType type_ -> prPrec i 0 (concatD [prt 0 type_])
+    AbsCpp.AConst type_ id -> prPrec i 0 (concatD [doc (showString "const"), prt 0 type_, prt 0 id])
+    AbsCpp.AConstType type_ -> prPrec i 0 (concatD [doc (showString "const"), prt 0 type_])
   prtList _ [] = concatD []
   prtList _ [x] = concatD [prt 0 x]
   prtList _ (x:xs) = concatD [prt 0 x, doc (showString ","), prt 0 xs]
@@ -119,45 +127,73 @@ instance Print [AbsCpp.Arg] where
 instance Print AbsCpp.Stm where
   prt i e = case e of
     AbsCpp.SExp exp -> prPrec i 0 (concatD [prt 0 exp, doc (showString ";")])
-    AbsCpp.SDecls type_ ids -> prPrec i 0 (concatD [prt 0 type_, prt 0 ids, doc (showString ";")])
-    AbsCpp.SInit type_ id exp -> prPrec i 0 (concatD [prt 0 type_, prt 0 id, doc (showString "="), prt 0 exp, doc (showString ";")])
+    AbsCpp.SDecls declaration -> prPrec i 0 (concatD [prt 0 declaration, doc (showString ";")])
+    AbsCpp.SInit declaration exp -> prPrec i 0 (concatD [prt 0 declaration, doc (showString "="), prt 0 exp, doc (showString ";")])
     AbsCpp.SReturn exp -> prPrec i 0 (concatD [doc (showString "return"), prt 0 exp, doc (showString ";")])
     AbsCpp.SReturnVoid -> prPrec i 0 (concatD [doc (showString "return"), doc (showString ";")])
     AbsCpp.SWhile exp stm -> prPrec i 0 (concatD [doc (showString "while"), doc (showString "("), prt 0 exp, doc (showString ")"), prt 0 stm])
     AbsCpp.SBlock stms -> prPrec i 0 (concatD [doc (showString "{"), prt 0 stms, doc (showString "}")])
-    AbsCpp.SIfElse exp stm1 stm2 -> prPrec i 0 (concatD [doc (showString "if"), doc (showString "("), prt 0 exp, doc (showString ")"), prt 0 stm1, doc (showString "else"), prt 0 stm2])
+    AbsCpp.SIfElse exp stm contd -> prPrec i 0 (concatD [doc (showString "if"), doc (showString "("), prt 0 exp, doc (showString ")"), prt 0 stm, prt 0 contd])
+    AbsCpp.SDoWhi stm exp -> prPrec i 0 (concatD [doc (showString "do"), prt 0 stm, doc (showString "while"), doc (showString "("), prt 0 exp, doc (showString ")"), doc (showString ";")])
+    AbsCpp.SFor stm1 exp1 exp2 stm2 -> prPrec i 0 (concatD [doc (showString "for"), doc (showString "("), prt 0 stm1, prt 0 exp1, doc (showString ";"), prt 0 exp2, doc (showString ")"), prt 0 stm2])
+    AbsCpp.STypDef type_ id -> prPrec i 0 (concatD [doc (showString "typedef"), prt 0 type_, prt 0 id, doc (showString ";")])
   prtList _ [] = concatD []
   prtList _ (x:xs) = concatD [prt 0 x, prt 0 xs]
 
 instance Print [AbsCpp.Stm] where
   prt = prtList
 
+instance Print AbsCpp.Declaration where
+  prt i e = case e of
+    AbsCpp.DeclaSim type_ ids -> prPrec i 0 (concatD [prt 0 type_, prt 0 ids])
+    AbsCpp.DeclaConst type_ id -> prPrec i 0 (concatD [doc (showString "const"), prt 0 type_, prt 0 id])
+
+instance Print AbsCpp.Contd where
+  prt i e = case e of
+    AbsCpp.YesContd stm -> prPrec i 0 (concatD [doc (showString "else"), prt 0 stm])
+    AbsCpp.NoContd -> prPrec i 0 (concatD [])
+
 instance Print AbsCpp.Exp where
   prt i e = case e of
+    AbsCpp.ECondit exp1 exp2 exp3 -> prPrec i 1 (concatD [prt 0 exp1, doc (showString "?"), prt 2 exp2, doc (showString ":"), prt 2 exp3])
+    AbsCpp.EExcept exp -> prPrec i 2 (concatD [doc (showString "throw"), prt 0 exp])
+    AbsCpp.EPlusEq exp1 exp2 -> prPrec i 2 (concatD [prt 3 exp1, doc (showString "+="), prt 2 exp2])
+    AbsCpp.EMinEq exp1 exp2 -> prPrec i 2 (concatD [prt 3 exp1, doc (showString "-="), prt 2 exp2])
+    AbsCpp.EAss exp1 exp2 -> prPrec i 2 (concatD [prt 3 exp1, doc (showString "="), prt 2 exp2])
+    AbsCpp.EOr exp1 exp2 -> prPrec i 3 (concatD [prt 3 exp1, doc (showString "||"), prt 4 exp2])
+    AbsCpp.EAnd exp1 exp2 -> prPrec i 4 (concatD [prt 4 exp1, doc (showString "&&"), prt 5 exp2])
+    AbsCpp.ENEq exp1 exp2 -> prPrec i 8 (concatD [prt 8 exp1, doc (showString "!="), prt 9 exp2])
+    AbsCpp.EEq exp1 exp2 -> prPrec i 8 (concatD [prt 8 exp1, doc (showString "=="), prt 9 exp2])
+    AbsCpp.EGEq exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString ">="), prt 10 exp2])
+    AbsCpp.ELEq exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString "<="), prt 10 exp2])
+    AbsCpp.EGt exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString ">"), prt 10 exp2])
+    AbsCpp.ELt exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString "<"), prt 10 exp2])
+    AbsCpp.ERShift exp1 exp2 -> prPrec i 10 (concatD [prt 10 exp1, doc (showString ">>"), prt 11 exp2])
+    AbsCpp.ELShift exp1 exp2 -> prPrec i 10 (concatD [prt 10 exp1, doc (showString "<<"), prt 11 exp2])
+    AbsCpp.EMinus exp1 exp2 -> prPrec i 11 (concatD [prt 11 exp1, doc (showString "-"), prt 12 exp2])
+    AbsCpp.EPlus exp1 exp2 -> prPrec i 11 (concatD [prt 11 exp1, doc (showString "+"), prt 12 exp2])
+    AbsCpp.EMod exp1 exp2 -> prPrec i 12 (concatD [prt 13 exp1, doc (showString "%"), prt 12 exp2])
+    AbsCpp.EDiv exp1 exp2 -> prPrec i 12 (concatD [prt 12 exp1, doc (showString "/"), prt 13 exp2])
+    AbsCpp.ETimes exp1 exp2 -> prPrec i 12 (concatD [prt 12 exp1, doc (showString "*"), prt 13 exp2])
+    AbsCpp.EPointer exp -> prPrec i 13 (concatD [doc (showString "*"), prt 13 exp])
+    AbsCpp.ENegBool exp -> prPrec i 13 (concatD [doc (showString "!"), prt 13 exp])
+    AbsCpp.ENegInt exp -> prPrec i 13 (concatD [doc (showString "-"), prt 13 exp])
+    AbsCpp.EDecr exp -> prPrec i 13 (concatD [doc (showString "--"), prt 13 exp])
+    AbsCpp.EIncr exp -> prPrec i 13 (concatD [doc (showString "++"), prt 13 exp])
+    AbsCpp.EAssPointer exp1 exp2 -> prPrec i 14 (concatD [prt 14 exp1, doc (showString "->"), prt 15 exp2])
+    AbsCpp.ERefCall exp1 exp2 -> prPrec i 14 (concatD [prt 14 exp1, doc (showString "."), prt 15 exp2])
+    AbsCpp.EArray exp1 exp2 -> prPrec i 14 (concatD [prt 14 exp1, doc (showString "["), prt 0 exp2, doc (showString "]")])
+    AbsCpp.ECall exp exps -> prPrec i 14 (concatD [prt 14 exp, doc (showString "("), prt 0 exps, doc (showString ")")])
+    AbsCpp.EPostDecr exp -> prPrec i 14 (concatD [prt 14 exp, doc (showString "--")])
+    AbsCpp.EPostIncr exp -> prPrec i 14 (concatD [prt 14 exp, doc (showString "++")])
+    AbsCpp.EQConst qconst -> prPrec i 15 (concatD [prt 0 qconst])
     AbsCpp.ETrue -> prPrec i 15 (concatD [doc (showString "true")])
     AbsCpp.EFalse -> prPrec i 15 (concatD [doc (showString "false")])
+    AbsCpp.EString strs -> prPrec i 15 (concatD [prt 0 strs])
+    AbsCpp.EChar c -> prPrec i 15 (concatD [prt 0 c])
     AbsCpp.EInt n -> prPrec i 15 (concatD [prt 0 n])
     AbsCpp.EDouble d -> prPrec i 15 (concatD [prt 0 d])
-    AbsCpp.EString str -> prPrec i 15 (concatD [prt 0 str])
-    AbsCpp.EId id -> prPrec i 15 (concatD [prt 0 id])
-    AbsCpp.EApp id exps -> prPrec i 15 (concatD [prt 0 id, doc (showString "("), prt 0 exps, doc (showString ")")])
-    AbsCpp.EPIncr exp -> prPrec i 14 (concatD [prt 15 exp, doc (showString "++")])
-    AbsCpp.EPDecr exp -> prPrec i 14 (concatD [prt 15 exp, doc (showString "--")])
-    AbsCpp.EIncr exp -> prPrec i 13 (concatD [doc (showString "++"), prt 14 exp])
-    AbsCpp.EDecr exp -> prPrec i 13 (concatD [doc (showString "--"), prt 14 exp])
-    AbsCpp.ETimes exp1 exp2 -> prPrec i 12 (concatD [prt 12 exp1, doc (showString "*"), prt 13 exp2])
-    AbsCpp.EDiv exp1 exp2 -> prPrec i 12 (concatD [prt 12 exp1, doc (showString "/"), prt 13 exp2])
-    AbsCpp.EPlus exp1 exp2 -> prPrec i 11 (concatD [prt 11 exp1, doc (showString "+"), prt 12 exp2])
-    AbsCpp.EMinus exp1 exp2 -> prPrec i 11 (concatD [prt 11 exp1, doc (showString "-"), prt 12 exp2])
-    AbsCpp.ELt exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString "<"), prt 10 exp2])
-    AbsCpp.EGt exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString ">"), prt 10 exp2])
-    AbsCpp.ELtEq exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString "<="), prt 10 exp2])
-    AbsCpp.EGtEq exp1 exp2 -> prPrec i 9 (concatD [prt 9 exp1, doc (showString ">="), prt 10 exp2])
-    AbsCpp.EEq exp1 exp2 -> prPrec i 8 (concatD [prt 8 exp1, doc (showString "=="), prt 9 exp2])
-    AbsCpp.ENEq exp1 exp2 -> prPrec i 8 (concatD [prt 8 exp1, doc (showString "!="), prt 9 exp2])
-    AbsCpp.EAnd exp1 exp2 -> prPrec i 4 (concatD [prt 4 exp1, doc (showString "&&"), prt 5 exp2])
-    AbsCpp.EOr exp1 exp2 -> prPrec i 3 (concatD [prt 3 exp1, doc (showString "||"), prt 4 exp2])
-    AbsCpp.EAss exp1 exp2 -> prPrec i 2 (concatD [prt 3 exp1, doc (showString "="), prt 2 exp2])
+    AbsCpp.EPred type_1 type_2 -> prPrec i 15 (concatD [prt 0 type_1, prt 0 type_2])
     AbsCpp.ETyped exp type_ -> prPrec i 15 (concatD [doc (showString "("), prt 0 exp, doc (showString ":"), prt 0 type_, doc (showString ")")])
   prtList _ [] = concatD []
   prtList _ [x] = concatD [prt 0 x]
@@ -166,14 +202,38 @@ instance Print AbsCpp.Exp where
 instance Print [AbsCpp.Exp] where
   prt = prtList
 
+instance Print AbsCpp.QConst where
+  prt i e = case e of
+    AbsCpp.QuConst elmts -> prPrec i 0 (concatD [prt 0 elmts])
+
+instance Print AbsCpp.Elmt where
+  prt i e = case e of
+    AbsCpp.QCElmt id -> prPrec i 0 (concatD [prt 0 id])
+    AbsCpp.QCElntt id types -> prPrec i 0 (concatD [prt 0 id, doc (showString "<"), prt 0 types, doc (showString ">")])
+  prtList _ [x] = concatD [prt 0 x]
+  prtList _ (x:xs) = concatD [prt 0 x, doc (showString "::"), prt 0 xs]
+
 instance Print AbsCpp.Type where
   prt i e = case e of
-    AbsCpp.Type_bool -> prPrec i 0 (concatD [doc (showString "bool")])
-    AbsCpp.Type_int -> prPrec i 0 (concatD [doc (showString "int")])
-    AbsCpp.Type_double -> prPrec i 0 (concatD [doc (showString "double")])
-    AbsCpp.Type_void -> prPrec i 0 (concatD [doc (showString "void")])
-    AbsCpp.Type_string -> prPrec i 0 (concatD [doc (showString "string")])
+    AbsCpp.TypInt -> prPrec i 0 (concatD [doc (showString "int")])
+    AbsCpp.TypChar -> prPrec i 0 (concatD [doc (showString "char")])
+    AbsCpp.TypBool -> prPrec i 0 (concatD [doc (showString "bool")])
+    AbsCpp.TypVoid -> prPrec i 0 (concatD [doc (showString "void")])
+    AbsCpp.TypDoub -> prPrec i 0 (concatD [doc (showString "double")])
+    AbsCpp.TypQC qconst -> prPrec i 0 (concatD [prt 0 qconst])
+    AbsCpp.TypRef type_ -> prPrec i 0 (concatD [prt 0 type_, doc (showString "&")])
+  prtList _ [x] = concatD [prt 0 x]
+  prtList _ (x:xs) = concatD [prt 0 x, doc (showString ","), prt 0 xs]
 
 instance Print [AbsCpp.Id] where
+  prt = prtList
+
+instance Print [AbsCpp.Type] where
+  prt = prtList
+
+instance Print [String] where
+  prt = prtList
+
+instance Print [AbsCpp.Elmt] where
   prt = prtList
 

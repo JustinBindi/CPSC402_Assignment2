@@ -21,11 +21,11 @@ $i = [$l $d _ ']     -- identifier character
 $u = [. \n]          -- universal: any character
 
 @rsyms =    -- symbols and non-identifier-like reserved words
-   \( | \) | \{ | \} | \, | \; | \= | \+ \+ | \- \- | \* | \/ | \+ | \- | \< | \> | \< \= | \> \= | \= \= | \! \= | \& \& | \| \|
+   \( | \) | \{ | \} | \; | \< | \> | \, | \= | \? | \: | \+ \= | \- \= | \| \| | \& \& | \! \= | \= \= | \> \= | \< \= | \> \> | \< \< | \- | \+ | \% | \/ | \* | \! | \- \- | \+ \+ | \- \> | \. | \[ | \] | \& | \: \:
 
 :-
-"#" [.]* ; -- Toss single line comments
 "//" [.]* ; -- Toss single line comments
+"#" [.]* ; -- Toss single line comments
 "/*" ([$u # \*] | \*+ [$u # [\* \/]])* ("*")+ "/" ;
 
 $white+ ;
@@ -38,7 +38,8 @@ $l $i*
     { tok (\p s -> PT p (eitherResIdent (TV . share) s)) }
 \" ([$u # [\" \\ \n]] | (\\ (\" | \\ | \' | n | t | r | f)))* \"
     { tok (\p s -> PT p (TL $ share $ unescapeInitTail s)) }
-
+\' ($u # [\' \\] | \\ [\\ \' n t r f]) \'
+    { tok (\p s -> PT p (TC $ share s))  }
 $d+
     { tok (\p s -> PT p (TI $ share s))    }
 $d+ \. $d+ (e (\-)? $d+)?
@@ -111,7 +112,7 @@ eitherResIdent tv s = treeFind resWords
                               | s == a = t
 
 resWords :: BTree
-resWords = b ">" 17 (b "-" 9 (b "*" 5 (b "(" 3 (b "&&" 2 (b "!=" 1 N N) N) (b ")" 4 N N)) (b "++" 7 (b "+" 6 N N) (b "," 8 N N))) (b "<" 13 (b "/" 11 (b "--" 10 N N) (b ";" 12 N N)) (b "=" 15 (b "<=" 14 N N) (b "==" 16 N N)))) (b "return" 25 (b "else" 21 (b "bool" 19 (b ">=" 18 N N) (b "double" 20 N N)) (b "if" 23 (b "false" 22 N N) (b "int" 24 N N))) (b "while" 29 (b "true" 27 (b "string" 26 N N) (b "void" 28 N N)) (b "||" 31 (b "{" 30 N N) (b "}" 32 N N))))
+resWords = b ">" 27 (b "--" 14 (b ")" 7 (b "&" 4 (b "!=" 2 (b "!" 1 N N) (b "%" 3 N N)) (b "(" 6 (b "&&" 5 N N) N)) (b "+=" 11 (b "+" 9 (b "*" 8 N N) (b "++" 10 N N)) (b "-" 13 (b "," 12 N N) N))) (b ";" 21 (b "/" 18 (b "->" 16 (b "-=" 15 N N) (b "." 17 N N)) (b "::" 20 (b ":" 19 N N) N)) (b "<=" 24 (b "<<" 23 (b "<" 22 N N) N) (b "==" 26 (b "=" 25 N N) N)))) (b "for" 40 (b "char" 34 (b "[" 31 (b ">>" 29 (b ">=" 28 N N) (b "?" 30 N N)) (b "bool" 33 (b "]" 32 N N) N)) (b "double" 37 (b "do" 36 (b "const" 35 N N) N) (b "false" 39 (b "else" 38 N N) N))) (b "using" 47 (b "throw" 44 (b "int" 42 (b "if" 41 N N) (b "return" 43 N N)) (b "typedef" 46 (b "true" 45 N N) N)) (b "{" 50 (b "while" 49 (b "void" 48 N N) N) (b "}" 52 (b "||" 51 N N) N))))
    where b s n = let bs = id s
                   in B bs (TS bs n)
 
