@@ -1,4 +1,5 @@
 PDefs. Program ::= [Def] ;
+terminator Def "" ;
 
 ADecl. Arg ::= Type Id ;
 AType. Arg ::= Type ;
@@ -81,7 +82,6 @@ STypDef. Stm ::= "typedef" Type Id ";"
 
 
 terminator Stm "" ;
-terminator Def "" ;
 
 YesContd. Contd ::= "else" Stm ;
 NoContd.  Contd ::= ;
