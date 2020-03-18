@@ -8,45 +8,12 @@ AConstType. Arg ::= "const" Type ;
 DeclaSim. Declaration ::= Type [Id] ;
 DeclaConst. Declaration ::= "const" Type Id ;
 
-
 DDeclVar. Def ::= Type [Id] ";"    ;
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 DTypDef.   Def ::= "typedef" Type Id ";" ;
 DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
 DUsing.    Def ::= "using" QConst ";"    ;
-
-separator Arg "," ;
-separator Exp "," ;
-separator nonempty Id     ","  ;
-separator nonempty Type   ","  ;
-separator nonempty String ""   ;
-separator nonempty Elmt   "::" ;
-
-terminator Stm "" ;
-terminator Def "" ;
-
-
-SDecl.  Stm ::= Declaration ";" ;
-SInit.  Stm ::= Declaration "=" Exp ";" ;
-
-
-
-SExp. Stm ::= Exp ";" ;
-
-SReturn. Stm ::= "return" Exp ";"                ;
-SWhile.  Stm ::= "while" "(" Exp ")" Stm         ;
-
-SDoWhi.  Stm ::= "do" Stm "while" "(" Exp ")" ";";
-SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
-
-SBlock.  Stm ::= "{" [Stm] "}"                   ;
-SIfElse. Stm ::= "if" "(" Exp ")" Stm Contd      ;
-
-YesContd. Contd ::= "else" Stm ;
-NoContd.  Contd ::= ;
-
-STypDef. Stm ::= "typedef" Type Id ";" ;
 
 ECondit.     Exp1  ::= Exp  "?"  Exp2 ":" Exp2 ;
 EExcept.     Exp2  ::= "throw" Exp             ;
@@ -88,8 +55,36 @@ EInt.        Exp15 ::= Integer                 ;
 EDouble.     Exp15 ::= Double                  ;
 EPred.       Exp15 ::= Type Type               ;
 
-
 coercions Exp 15 ;
+
+separator Arg "," ;
+separator Exp "," ;
+separator nonempty Id     ","  ;
+separator nonempty Type   ","  ;
+separator nonempty String ""   ;
+separator nonempty Elmt   "::" ;
+
+SDecl.  Stm ::= Declaration ";" ;
+SInit.  Stm ::= Declaration "=" Exp ";" ;
+
+SExp. Stm ::= Exp ";" ;
+
+SReturn. Stm ::= "return" Exp ";"                ;
+SWhile.  Stm ::= "while" "(" Exp ")" Stm         ;
+
+SDoWhi.  Stm ::= "do" Stm "while" "(" Exp ")" ";";
+SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
+
+SBlock.  Stm ::= "{" [Stm] "}"                   ;
+SIfElse. Stm ::= "if" "(" Exp ")" Stm Contd      ;
+STypDef. Stm ::= "typedef" Type Id ";"
+
+
+terminator Stm "" ;
+terminator Def "" ;
+
+YesContd. Contd ::= "else" Stm ;
+NoContd.  Contd ::= ;
 
 QuConst. QConst ::= [Elmt] ;
 
