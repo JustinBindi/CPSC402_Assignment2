@@ -21,7 +21,7 @@ AConstType. Arg ::= "const" Type ;
 separator Arg "," ;
 
 SExp. Stm ::= Exp ";" ;
-SDecl.  Stm ::= Declaration ";" ;
+SDecls.  Stm ::= Declaration ";" ;
 SInit.  Stm ::= Declaration "=" Exp ";" ;
 SReturn. Stm ::= "return" Exp ";"                ;
 SReturnVoid. Stm ::= "return" ";" ;
@@ -54,7 +54,7 @@ EMinEq.      Exp2  ::= Exp3  "-=" Exp2         ;
 EAss.        Exp2  ::= Exp3  "="  Exp2         ;
 EOr.         Exp3  ::= Exp3  "||" Exp4         ;
 EAnd.        Exp4  ::= Exp4  "&&" Exp5         ;
-ENotEq.      Exp8  ::= Exp8  "!=" Exp9         ;
+ENEq.        Exp8  ::= Exp8  "!=" Exp9         ;
 EEq.         Exp8  ::= Exp8  "==" Exp9         ;
 EGEq.        Exp9  ::= Exp9  ">=" Exp10        ;
 ELEq.        Exp9  ::= Exp9  "<=" Exp10        ;
