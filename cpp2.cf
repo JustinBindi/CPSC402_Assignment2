@@ -1,8 +1,20 @@
 PDefs. Program ::= [Def] ;
-terminator Def "" ;
 
+ADecl. Arg ::= Type Id ;
+AType. Arg ::= Type ;
+AConst. Arg ::= "const" Type Id ;
+AConstType. Arg ::= "const" Type ;
+
+DeclaSim. Declaration ::= Type [Id] ;
+DeclaConst. Declaration ::= "const" Type Id ;
+
+
+DDeclVar. Def ::= Type [Id] ";"    ;
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
+DTypDef.   Def ::= "typedef" Type Id ";" ;
+DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
+DUsing.    Def ::= "using" QConst ";"    ;
 
 separator Arg "," ;
 separator Exp "," ;
@@ -12,22 +24,12 @@ separator nonempty String ""   ;
 separator nonempty Elmt   "::" ;
 
 terminator Stm "" ;
+terminator Def "" ;
 
-DUsing.    Def ::= "using" QConst ";"    ;
-DTypDef.   Def ::= "typedef" Type Id ";" ;
-DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
-DDeclVar. Def ::= Type [Id] ";"    ;
-
-ADecl. Arg ::= Type Id ;
-AType. Arg ::= Type ;
-AConst. Arg ::= "const" Type Id ;
-AConstType. Arg ::= "const" Type ;
 
 SDecl.  Stm ::= Declaration ";" ;
 SInit.  Stm ::= Declaration "=" Exp ";" ;
 
-DeclaSim. Declaration ::= Type [Id] ;
-DeclaConst. Declaration ::= "const" Type Id ;
 
 
 SExp. Stm ::= Exp ";" ;
