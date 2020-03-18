@@ -1,10 +1,17 @@
 PDefs. Program ::= [Def] ;
-terminator Def "" ;
 
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
+
+terminator Def "" ;
+
+
+ADecl. Arg ::= Type Id ;
+AType. Arg ::= Type ;
+AConst. Arg ::= "const" Type Id ;
+AConstType. Arg ::= "const" Type ;
+
 separator Arg "," ;
-terminator Stm "" ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
 
@@ -13,10 +20,9 @@ DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
 
 DDeclVar. Def ::= Type [Id] ";"    ;
 
-ADecl. Arg ::= Type Id ;
-AType. Arg ::= Type ;
-AConst. Arg ::= "const" Type Id ;
-AConstType. Arg ::= "const" Type ;
+
+terminator Stm "" ;
+
 
 SDecl.  Stm ::= Declaration ";" ;
 SInit.  Stm ::= Declaration "=" Exp ";" ;
