@@ -3,14 +3,19 @@ terminator Def "" ;
 
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
+
 separator Arg "," ;
+separator Exp "," ;
+separator nonempty Id     ","  ;
+separator nonempty Type   ","  ;
+separator nonempty String ""   ;
+separator nonempty Elmt   "::" ;
+
 terminator Stm "" ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
-
 DTypDef.   Def ::= "typedef" Type Id ";" ;
 DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
-
 DDeclVar. Def ::= Type [Id] ";"    ;
 
 ADecl. Arg ::= Type Id ;
@@ -26,7 +31,6 @@ DeclaConst. Declaration ::= "const" Type Id ;
 
 
 SExp. Stm ::= Exp ";" ;
-separator Exp "," ;
 
 SReturn. Stm ::= "return" Exp ";"                ;
 SWhile.  Stm ::= "while" "(" Exp ")" Stm         ;
@@ -84,11 +88,6 @@ EPred.       Exp15 ::= Type Type               ;
 
 
 coercions Exp 15 ;
-
-separator nonempty Id     ","  ;
-separator nonempty Type   ","  ;
-separator nonempty String ""   ;
-separator nonempty Elmt   "::" ;
 
 QuConst. QConst ::= [Elmt] ;
 
