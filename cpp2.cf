@@ -1,10 +1,6 @@
 PDefs. Program ::= [Def] ;
 terminator Def "" ;
 
-comment "//"      ;
-comment "/*" "*/" ;
-comment "#"       ;
-
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 separator Arg "," ;
@@ -109,3 +105,8 @@ TypQC.   Type ::= QConst  ;
 TypRef. Type ::= Type "&";
 
 token Id (letter (letter | digit | '_')*) ;
+
+
+comment "//"      ;
+comment "/*" "*/" ;
+comment "#"       ;
