@@ -42,8 +42,8 @@ NoContd.  Contd ::= ;
 
 STypDef. Stm ::= "typedef" Type Id ";" ;
 
-EExcept.     Exp2  ::= "throw" Exp             ;
 ECondit.     Exp1  ::= Exp  "?"  Exp2 ":" Exp2 ;
+EExcept.     Exp2  ::= "throw" Exp             ;
 EPlusEq.     Exp2  ::= Exp3  "+=" Exp2         ;
 EMinEq.      Exp2  ::= Exp3  "-=" Exp2         ;
 EAss.        Exp2  ::= Exp3  "="  Exp2         ;
