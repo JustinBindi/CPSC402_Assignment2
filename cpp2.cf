@@ -1,5 +1,6 @@
 PDefs. Program ::= [Def] ;
 terminator Def "" ;
+terminator Stm "" ;
 
 ADecl. Arg ::= Type Id ;
 AType. Arg ::= Type ;
@@ -79,9 +80,6 @@ SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
 SBlock.  Stm ::= "{" [Stm] "}"                   ;
 SIfElse. Stm ::= "if" "(" Exp ")" Stm Contd      ;
 STypDef. Stm ::= "typedef" Type Id ";"
-
-
-terminator Stm "" ;
 
 YesContd. Contd ::= "else" Stm ;
 NoContd.  Contd ::= ;
