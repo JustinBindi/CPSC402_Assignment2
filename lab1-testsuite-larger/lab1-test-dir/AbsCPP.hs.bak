@@ -10,93 +10,98 @@ data Program = PDefs [Def]
   deriving (Eq, Ord, Show, Read)
 
 data Def
-    = DFun Type Id [Arg] [Stm]
-    | DFunc Type Id [Arg]
-    | DUsing QConst
-    | DTypDef Type Id
-    | DTypDefVect Type [Type] Id
-    | DDeclVar Type [Id]
+    = DFunc Type Id [Arg] [Stm]
+    | DFInline Type Id [Arg] [Stm]
+    | DDecl Decl
+    | DUse QConst
+    | DTemp Type Id [Type]
+    | DTInline Type Id [Type]
+    | DMain Type [Arg] [Stm]
+    | DAlias Type Id
+    | DInit Init
+    | DStruct Id [Decl]
   deriving (Eq, Ord, Show, Read)
 
-data Arg
-    = ADecl Type Id | AType Type | AConst Type Id | AConstType Type
+data Arg = ADecl Type Id
   deriving (Eq, Ord, Show, Read)
 
 data Stm
     = SExp Exp
-    | SDecls Declaration
-    | SInit Declaration Exp
+    | SDecl Decl
+    | SInit Init
     | SReturn Exp
     | SReturnVoid
     | SWhile Exp Stm
-    | SBlock [Stm]
-    | SIfElse Exp Stm Contd
-    | SDoWhi Stm Exp
     | SFor Stm Exp Exp Stm
-    | STypDef Type Id
+    | SDo Stm Exp
+    | SBlock [Stm]
+    | SIf Exp Stm
+    | SIfElse Exp Stm Stm
+    | SMethod Type Id [Arg] Stm
+    | SAlias Type
+    | SStruct Id [Decl]
   deriving (Eq, Ord, Show, Read)
 
-data Declaration = DeclaSim Type [Id] | DeclaConst Type Id
+data Decl = DDef Type [Id]
   deriving (Eq, Ord, Show, Read)
 
-data Contd = YesContd Stm | NoContd
-  deriving (Eq, Ord, Show, Read)
-
-data Exp
-    = ECondit Exp Exp Exp
-    | EExcept Exp
-    | EPlusEq Exp Exp
-    | EMinEq Exp Exp
-    | EAss Exp Exp
-    | EOr Exp Exp
-    | EAnd Exp Exp
-    | ENEq Exp Exp
-    | EEq Exp Exp
-    | EGEq Exp Exp
-    | ELEq Exp Exp
-    | EGt Exp Exp
-    | ELt Exp Exp
-    | ERShift Exp Exp
-    | ELShift Exp Exp
-    | EMinus Exp Exp
-    | EPlus Exp Exp
-    | EMod Exp Exp
-    | EDiv Exp Exp
-    | ETimes Exp Exp
-    | EPointer Exp
-    | ENegBool Exp
-    | ENegInt Exp
-    | EDecr Exp
-    | EIncr Exp
-    | EAssPointer Exp Exp
-    | ERefCall Exp Exp
-    | EArray Exp Exp
-    | ECall Exp [Exp]
-    | EPostDecr Exp
-    | EPostIncr Exp
-    | EQConst QConst
-    | ETrue
-    | EFalse
-    | EString [String]
-    | EChar Char
-    | EInt Integer
-    | EDouble Double
-    | EPred Type Type
-  deriving (Eq, Ord, Show, Read)
-
-data QConst = QuConst [Elmt]
-  deriving (Eq, Ord, Show, Read)
-
-data Elmt = QCElmt Id | QCElntt Id [Type]
+data Init = IDef Type Id Exp
   deriving (Eq, Ord, Show, Read)
 
 data Type
-    = TypInt
-    | TypChar
-    | TypBool
-    | TypVoid
-    | TypDoub
-    | TypQC QConst
-    | TypRef Type
+    = TInt
+    | TBool
+    | TVoid
+    | TDouble
+    | TQConst QConst
+    | TCons Type
+    | TAmp Type
+  deriving (Eq, Ord, Show, Read)
+
+data QConst = QDef [Name]
+  deriving (Eq, Ord, Show, Read)
+
+data Name = NId Id | NBrac Id [Type]
+  deriving (Eq, Ord, Show, Read)
+
+data Exp
+    = ETrue
+    | EFalse
+    | EInt Integer
+    | EDouble Double
+    | EString [String]
+    | EChar Char
+    | EQConst QConst
+    | EArray Exp Exp
+    | EFunc Exp [Exp]
+    | EDot Exp Exp
+    | EPIncr Exp
+    | EPDecr Exp
+    | EDeref Exp
+    | EArrow Exp Exp
+    | EIncr Exp
+    | EDecr Exp
+    | ENot Exp
+    | ETimes Exp Exp
+    | EDiv Exp Exp
+    | EMod Exp Exp
+    | EPlus Exp Exp
+    | EMinus Exp Exp
+    | ECout Exp [Exp]
+    | ECin Exp Exp
+    | ELt Exp Exp
+    | EGt Exp Exp
+    | ELtEq Exp Exp
+    | EGtEq Exp Exp
+    | EEq Exp Exp
+    | ENEq Exp Exp
+    | EAnd Exp Exp
+    | EOr Exp Exp
+    | EAss Exp Exp
+    | EAssA Exp Exp
+    | EAssM Exp Exp
+    | EIf Exp Exp Exp
+    | EThrow Exp
+    | ETyped Exp Type
   deriving (Eq, Ord, Show, Read)
 
