@@ -1,20 +1,26 @@
 PDefs.   Program ::= [Def] ;
 
 DFunc.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DDecl.	    Def ::= Type [Id] ";" ;
+DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DDecl.	    Def ::= Decl ;
 DUse.	    Def ::= "using" QConst ";" ;
-DStruct.    Def ::= Type Id "(" [Type] ")" ";" ;
+DTemp.      Def ::= Type Id "(" [Type] ")" ";" ;
+DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
 DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
+DAlias.     Def ::= "typedef" Type Id ";" ;
+DInit.      Def ::= Init ;
+DStruct.    Def ::= "struct" Id "{" [Decl] "}" ";" ;
+
 
 terminator Def "" ;
 
-ADecl.   Arg    ::= Type Id ;
+ADecl.      Arg ::= Type Id ;
 
 separator Arg "," ;
 
 SExp.        Stm ::= Exp ";" ;
-SDecls.      Stm ::= Type [Id] ";" ;
-SInit.       Stm ::= Type Id "=" Exp ";" ;
+SDecl.       Stm ::= Decl ;
+SInit.       Stm ::= Init ;
 SReturn.     Stm ::= "return" Exp ";" ;
 SReturnVoid. Stm ::= "return" ";" ;
 SWhile.      Stm ::= "while" "(" Exp ")" Stm ;
@@ -24,23 +30,30 @@ SBlock.      Stm ::= "{" [Stm] "}" ;
 SIf.         Stm ::= "if" "(" Exp ")" Stm ;
 SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
 SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
+SAlias.      Stm ::= "typedef" Type ;
+SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
+
 
 terminator Stm "" ;
+
+DDef.	   Decl ::= Type [Id] ";" ;
+
+terminator Decl "" ;
+
+IDef.      Init ::= Type Id "=" Exp ";" ;
 
 TInt.      Type3 ::= "int" ;
 TBool.     Type3 ::= "bool" ;
 TVoid.     Type3 ::= "void" ;
-TChar.     Type3 ::= "char" ;
 TDouble.   Type3 ::= "double" ;
 TQConst.   Type3 ::= QConst ;
 TCons.	   Type2 ::= "const" Type3 ;
-TAlias.    Type2 ::= "typedef" Type3 ;
 TAmp.      Type1 ::= Type2 "&" ;
 
 separator Type "," ;
 coercions Type 3 ;
 
-QDef.    QConst ::= [Name] ;
+QDef.      QConst ::= [Name] ;
 
 NId.	   Name ::= Id ;
 NBrac.     Name ::= Id "<" [Type] ">" ;
@@ -51,7 +64,7 @@ ETrue.   Exp16  ::= "true" ;
 EFalse.  Exp16  ::= "false" ;
 EInt.    Exp16  ::= Integer ;
 EDouble. Exp16  ::= Double ;
-EString. Exp16  ::= String ;
+EString. Exp16  ::= [String] ;
 EChar.   Exp16  ::= Char ;
 EQConst. Exp16  ::= QConst ;
 
@@ -104,6 +117,8 @@ coercions Exp 16 ;
 separator Exp3 "," ;
 
 separator nonempty Exp11 "" ;
+
+separator nonempty String "" ;
 
 token Id (letter (letter | digit | '_')*) ;
 
