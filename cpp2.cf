@@ -4,10 +4,8 @@ DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
-
 DTypDef.   Def ::= "typedef" Type Id ";" ;
 DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
-
 DDeclVar. Def ::= Type [Id] ";"    ;
 
 terminator Def "" ;
