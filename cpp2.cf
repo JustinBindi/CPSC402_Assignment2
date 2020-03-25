@@ -98,10 +98,10 @@ separator Exp "," ;
 
 
 
-QuConst. QConst ::= [Elmt] ;
+QuConst. QConst ::= [NameListId] ;
 
-QCElmt. Elmt ::= Id        ;
-QCElntt. Elmt ::= Id "<" [Type] ">" ;
+QCNameListId. NameListId ::= Id        ;
+QCElntt. NameListId ::= Id "<" [Type] ">" ;
 
 
 TypInt.  Type ::= "int"   ;
@@ -114,10 +114,14 @@ TypRef. Type ::= Type "&";
 
 token Id (letter (letter | digit | '_')*) ;
 
-separator nonempty Id     ","  ;
+
+L1a. NameListId ::= Id ;                             
+L1b. NameListId ::= Id "::" NameListId ;                       
+
 separator nonempty Type   ","  ;
 separator nonempty String ""   ;
-separator nonempty Elmt   "::" ;
+separator nonempty Id     ","  ;
+
 
 
 comment "//"      ;
