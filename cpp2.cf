@@ -13,8 +13,7 @@ terminator Def "" ;
 
 ADecl. Arg ::= Type Id ;
 AType. Arg ::= Type ;
-AConst. Arg ::= "const" Type Id ;
-AConstType. Arg ::= "const" Type ;
+
 
 separator Arg "," ;
 
