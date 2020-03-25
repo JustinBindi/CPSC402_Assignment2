@@ -47,7 +47,7 @@ SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
 
 
 
-STypDef. Stm ::= "typedef" Type Id ";" ;
+STypDef. Stm ::= "typedef" Type ;
 
 
 
