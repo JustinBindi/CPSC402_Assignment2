@@ -7,7 +7,7 @@ comment "/*" "*/" ;
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Type] ")" ";" ;
 DFunIL.    Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DFuncIL.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
+DFuncIL.   Def ::= "inline" Type Id "(" [Arg] ")" ";" ;
 
 DDecl.	   Def ::= Decl ;
 
@@ -47,13 +47,13 @@ terminator Decl "" ;
 
 IDef.      Init ::= Type Id "=" Exp ";" ;
 
-TAmp.      Type1 ::= Type2 "&" ;
-TCons.	   Type2 ::= "const" Type3 ;
-TQConst.   Type3 ::= QConst ;
-TVoid.     Type3 ::= "void" ;
-TInt.      Type3 ::= "int" ;
-TDouble.   Type3 ::= "double" ;
-TBool.     Type3 ::= "bool" ;
+TypRef.      Type1 ::= Type2 "&" ;
+TypConst.	   Type2 ::= "const" Type3 ;
+TypQC.       Type3 ::= QConst ;
+TypVoid.     Type3 ::= "void" ;
+TypInteger.  Type3 ::= "int" ;
+TypDouble.   Type3 ::= "double" ;
+TypBool.     Type3 ::= "bool" ;
 
 separator Type "," ;
 coercions Type 3 ;
