@@ -96,13 +96,7 @@ coercions Exp 15 ;
 separator Exp "," ;
 
 
-L1a. NameListId ::= Id ;                             
-L1b. NameListId ::= Id "::" NameListId ;    
 
-QuConst. QConst ::= Elmt ;
-
-QCElmt. Elmt ::= Id        ;
-QCElntt. Elmt ::= Id NameListId ;
 
 
 TypInt.  Type ::= "int"   ;
@@ -121,6 +115,13 @@ token Id (letter (letter | digit | '_')*) ;
 separator nonempty Type   ","  ;
 separator nonempty String ""   ;
 separator nonempty Id     ","  ;
+separator nonempty Elmt   "::" ;
+
+QuConst. QConst ::= [Elmt] ;
+
+QCElmt. Elmt ::= Id        ;
+QCElntt. Elmt ::= Id "<" [Type] ">" ;
+
 
 
 
