@@ -4,12 +4,17 @@ DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
-DDecl.	    Def ::= Declaration ;
+DDecl.	    Def ::= Decl ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
+DTemp.      Def ::= Type Id "(" [Type] ")" ";" ;
+
 DTypDef.   Def ::= "typedef" Type Id ";" ;
 DTypDefVect. Def ::= "typedef" Type "<" [Type] ">" Id ;
 DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
+DInit.      Def ::= Init ;
+DStruct.    Def ::= "struct" Id "{" [Decl] "}" ";" ;
+
 
 
 terminator Def "" ;
@@ -28,12 +33,16 @@ separator Arg "," ;
 
 SExp. Stm ::= Exp ";" ;
 SDecl.  Stm ::= Declaration ";" ;
-SInit.  Stm ::= Declaration "=" Exp ";" ;
+SInit.  Stm ::= Type Id "=" Exp ";" ;
 SReturn. Stm ::= "return" Exp ";"                ;
 SReturnVoid. Stm ::= "return" ";" ;
 SWhile.  Stm ::= "while" "(" Exp ")" Stm         ;
 SBlock.  Stm ::= "{" [Stm] "}"                   ;
 SIfElse. Stm ::= "if" "(" Exp ")" Stm Contd      ;
+SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
+SAlias.      Stm ::= "typedef" Type ;
+SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
+
 
 terminator Stm "" ;
 
