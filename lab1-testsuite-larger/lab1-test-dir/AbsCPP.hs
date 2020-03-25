@@ -12,10 +12,13 @@ data Program = PDefs [Def]
 data Def
     = DFun Type Id [Arg] [Stm]
     | DFunc Type Id [Arg]
+    | DFInline Type Id [Arg] [Stm]
+    | DTInline Type Id [Type]
     | DUsing QConst
     | DTypDef Type Id
     | DTypDefVect Type [Type] Id
     | DDeclVar Type [Id]
+    | DMain Type [Arg] [Stm]
   deriving (Eq, Ord, Show, Read)
 
 data Arg

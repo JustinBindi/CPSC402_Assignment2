@@ -19,10 +19,13 @@ transDef :: Def -> Result
 transDef x = case x of
   DFun type_ id args stms -> failure x
   DFunc type_ id args -> failure x
+  DFInline type_ id args stms -> failure x
+  DTInline type_ id types -> failure x
   DUsing qconst -> failure x
   DTypDef type_ id -> failure x
   DTypDefVect type_ types id -> failure x
   DDeclVar type_ ids -> failure x
+  DMain type_ args stms -> failure x
 transArg :: Arg -> Result
 transArg x = case x of
   ADecl type_ id -> failure x
