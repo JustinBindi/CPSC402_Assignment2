@@ -99,7 +99,7 @@ separator Exp "," ;
 L1a. NameListId ::= Id ;                             
 L1b. NameListId ::= Id "::" NameListId ;    
 
-QuConst. QConst ::= [NameListId] ;
+QuConst. QConst ::= NameListId ;
 
 QCNameListId. NameListId ::= Id        ;
 QCElntt. NameListId ::= Id "<" [Type] ">" ;
