@@ -16,8 +16,6 @@ terminator Def "" ;
 
 ADecl. Arg ::= Type Id ;
 
-
-
 separator Arg "," ;
 
 SExp. Stm ::= Exp ";" ;
@@ -35,6 +33,7 @@ SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
 SDoWhi.  Stm ::= "do" Stm "while" "(" Exp ")" ";";
 SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
 
+
 terminator Stm "" ;
 
 DDef. Decl ::= Type [Id] ";"    ;
@@ -42,6 +41,24 @@ DDef. Decl ::= Type [Id] ";"    ;
 terminator Decl "" ;
 
 IDef.      Init ::= Type Id "=" Exp ";" ;
+
+TypInt.  Type3 ::= "int"   ;
+TypBool. Type3 ::= "bool"  ;
+TypVoid. Type3 ::= "void"  ;
+TypDoub. Type3 ::= "double";
+TypQC.   Type3 ::= QConst  ;
+TCons.	 Type2 ::= "const" Type3 ;
+TypRef. Type1 ::= Type2 "&";
+
+separator Type   ","  ;
+coercions Type 3 ;
+
+QDef. QConst ::= [Elmt] ;
+
+NElmt. Elmt ::= Id        ;
+NElntt. Elmt ::= Id "<" [Type] ">" ;
+
+separator nonempty Elmt   "::" ;
 
 EThrow.      Exp1  ::= "throw" Exp2 ;
 
@@ -101,27 +118,11 @@ separator Exp3 "," ;
 
 separator nonempty Exp11 "" ;
 
-TypInt.  Type3 ::= "int"   ;
-TypBool. Type3 ::= "bool"  ;
-TypVoid. Type3 ::= "void"  ;
-TypDoub. Type3 ::= "double";
-TypQC.   Type3 ::= QConst  ;
-TCons.	 Type2 ::= "const" Type3 ;
-TypRef. Type1 ::= Type2 "&";
-coercions Type 3 ;
-
+separator nonempty String ""   ;
 
 token Id (letter (letter | digit | '_')*) ;
 
-separator Type   ","  ;
-separator nonempty String ""   ;
 separator nonempty Id     ","  ;
-separator nonempty Elmt   "::" ;
-
-QDef. QConst ::= [Elmt] ;
-
-NElmt. Elmt ::= Id        ;
-NElntt. Elmt ::= Id "<" [Type] ">" ;
 
 comment "//"      ;
 comment "/*" "*/" ;
