@@ -4,7 +4,6 @@ DFunc.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DDecl.	    Def ::= Decl ;
 DUse.	    Def ::= "using" QConst ";" ;
-DTemp.      Def ::= Type Id "(" [Type] ")" ";" ;
 DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
 DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
 DAlias.     Def ::= "typedef" Type Id ";" ;
@@ -66,6 +65,7 @@ EInt.    Exp16  ::= Integer ;
 EDouble. Exp16  ::= Double ;
 EString. Exp16  ::= [String] ;
 EChar.   Exp16  ::= Char ;
+EQConst. Exp16  ::= QConst ;
 
 EArray.  Exp15  ::= Exp16 "[" Exp11 "]" ;
 EFunc.	 Exp15  ::= Exp16 "(" [Exp3] ")" ;
