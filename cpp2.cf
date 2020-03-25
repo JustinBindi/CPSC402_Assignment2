@@ -19,9 +19,9 @@ DStruct.    Def ::= "struct" Id "{" [Decl] "}" ";" ;
 
 terminator Def "" ;
 
-DDef. Declaration ::= Type [Id] ";"    ;
+DDef. Decl ::= Type [Id] ";"    ;
 
-terminator Declaration "" ;
+terminator Decl "" ;
 
 
 ADecl. Arg ::= Type Id ;
@@ -32,7 +32,7 @@ AConstType. Arg ::= "const" Type ;
 separator Arg "," ;
 
 SExp. Stm ::= Exp ";" ;
-SDecl.  Stm ::= Declaration ";" ;
+SDecl.  Stm ::= Decl ";" ;
 SInit.  Stm ::= Type Id "=" Exp ";" ;
 SReturn. Stm ::= "return" Exp ";"                ;
 SReturnVoid. Stm ::= "return" ";" ;
@@ -47,8 +47,8 @@ SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
 terminator Stm "" ;
 
 
-DeclaSim. Declaration ::= Type [Id] ;
-DeclaConst. Declaration ::= "const" Type Id ;
+DeclaSim. Decl ::= Type [Id] ;
+DeclaConst. Decl ::= "const" Type Id ;
 
 
 
