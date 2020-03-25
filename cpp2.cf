@@ -114,13 +114,18 @@ separator nonempty Exp11 "" ;
 
 
 
-TypInt.  Type ::= "int"   ;
-TypChar. Type ::= "char"  ;
-TypBool. Type ::= "bool"  ;
-TypVoid. Type ::= "void"  ;
-TypDoub. Type ::= "double";
-TypQC.   Type ::= QConst  ;
-TypRef. Type ::= Type "&";
+TypInt.  Type3 ::= "int"   ;
+TypChar. Type3 ::= "char"  ;
+TypBool. Type3 ::= "bool"  ;
+TypVoid. Type3 ::= "void"  ;
+TypDoub. Type3 ::= "double";
+TypQC.   Type3 ::= QConst  ;
+TCons.	   Type2 ::= "const" Type3 ;
+TypRef. Type1 ::= Type2 "&";
+
+coercions Type 3 ;
+
+
 
 token Id (letter (letter | digit | '_')*) ;
 
@@ -130,7 +135,12 @@ token Id (letter (letter | digit | '_')*) ;
 separator nonempty Type   ","  ;
 separator nonempty String ""   ;
 separator nonempty Id     ","  ;
+separator nonempty Elmt   "::" ;
 
+QuConst. QConst ::= [Elmt] ;
+
+QCElmt. Elmt ::= Id        ;
+QCElntt. Elmt ::= Id "<" [Type] ">" ;
 
 
 
