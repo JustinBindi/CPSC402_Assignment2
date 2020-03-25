@@ -46,6 +46,7 @@ TInt.      Type3 ::= "int" ;
 TBool.     Type3 ::= "bool" ;
 TVoid.     Type3 ::= "void" ;
 TDouble.   Type3 ::= "double" ;
+TQConst.   Type3 ::= QConst ;
 TCons.	   Type2 ::= "const" Type3 ;
 TAmp.      Type1 ::= Type2 "&" ;
 
@@ -65,7 +66,6 @@ EInt.    Exp16  ::= Integer ;
 EDouble. Exp16  ::= Double ;
 EString. Exp16  ::= [String] ;
 EChar.   Exp16  ::= Char ;
-EQConst. Exp16  ::= QConst ;
 
 EArray.  Exp15  ::= Exp16 "[" Exp11 "]" ;
 EFunc.	 Exp15  ::= Exp16 "(" [Exp3] ")" ;
