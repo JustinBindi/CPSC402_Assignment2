@@ -25,9 +25,7 @@ terminator Decl "" ;
 
 
 ADecl. Arg ::= Type Id ;
-AType. Arg ::= Type ;
-AConst. Arg ::= "const" Type Id ;
-AConstType. Arg ::= "const" Type ;
+
 
 separator Arg "," ;
 
@@ -113,7 +111,6 @@ separator Exp3 "," ;
 
 separator nonempty Exp11 "" ;
 
-separator nonempty String "" ;
 
 
 
@@ -133,12 +130,7 @@ token Id (letter (letter | digit | '_')*) ;
 separator nonempty Type   ","  ;
 separator nonempty String ""   ;
 separator nonempty Id     ","  ;
-separator nonempty Elmt   "::" ;
 
-QuConst. QConst ::= [Elmt] ;
-
-QCElmt. Elmt ::= Id        ;
-QCElntt. Elmt ::= Id "<" [Type] ">" ;
 
 
 
