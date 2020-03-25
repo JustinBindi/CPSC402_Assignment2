@@ -1,38 +1,43 @@
 PDefs.   Program ::= [Def] ;
 
+comment "#" ;
+comment "//" ;
+comment "/*" "*/" ;
+
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DFunc.      Def ::= Type Id "(" [Type] ")" ";" ;
-DFunIL.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DFunc.     Def ::= Type Id "(" [Type] ")" ";" ;
+DFunIL.    Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFuncIL.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
-DDecl.	    Def ::= Decl ;
-DUsing.	      Def ::= "using" QConst ";" ;
-DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
-DTypDef.     Def ::= "typedef" Type Id ";" ;
-DInit.      Def ::= Init ;
-DStruct.    Def ::= "struct" Id "{" [Decl] "}" ";" ;
+
+DDecl.	   Def ::= Decl ;
+
+DMain.     Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
+DInit.     Def ::= Init ;
+DStruct.   Def ::= "struct" Id "{" [Decl] "}" ";" ;
+DUsing.	   Def ::= "using" QConst ";" ;
+DTypDef.   Def ::= "typedef" Type Id ";" ;
 
 
 terminator Def "" ;
 
-ADecl.      Arg ::= Type Id ;
+ADecl.     Arg ::= Type Id ;
 
-separator Arg "," ;
+separator  Arg "," ;
 
 SExp.        Stm ::= Exp ";" ;
 SDecl.       Stm ::= Decl ;
 SInit.       Stm ::= Init ;
-SReturn.     Stm ::= "return" Exp ";" ;
-SReturnVoid. Stm ::= "return" ";" ;
 SWhile.      Stm ::= "while" "(" Exp ")" Stm ;
 SFor.        Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
-SDoWhile.         Stm ::= "do" Stm "while" "(" Exp ")" ";" ;
+SDoWhile.    Stm ::= "do" Stm "while" "(" Exp ")" ";" ;
 SBlock.      Stm ::= "{" [Stm] "}" ;
 SIf.         Stm ::= "if" "(" Exp ")" Stm ;
 SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
 SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
-STypDef.      Stm ::= "typedef" Type ;
+STypDef.     Stm ::= "typedef" Type ;
 SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
-
+SReturn.     Stm ::= "return" Exp ";" ;
+SReturnVoid. Stm ::= "return" ";" ;
 
 terminator Stm "" ;
 
@@ -42,13 +47,13 @@ terminator Decl "" ;
 
 IDef.      Init ::= Type Id "=" Exp ";" ;
 
-TInt.      Type3 ::= "int" ;
-TBool.     Type3 ::= "bool" ;
-TVoid.     Type3 ::= "void" ;
-TDouble.   Type3 ::= "double" ;
-TQConst.   Type3 ::= QConst ;
-TCons.	   Type2 ::= "const" Type3 ;
 TAmp.      Type1 ::= Type2 "&" ;
+TCons.	   Type2 ::= "const" Type3 ;
+TQConst.   Type3 ::= QConst ;
+TVoid.     Type3 ::= "void" ;
+TInt.      Type3 ::= "int" ;
+TDouble.   Type3 ::= "double" ;
+TBool.     Type3 ::= "bool" ;
 
 separator Type "," ;
 coercions Type 3 ;
@@ -107,7 +112,7 @@ ETrue.       Exp16 ::= "true"                  ;
 EFalse.      Exp16 ::= "false"                 ;
 EString.     Exp16 ::= [String]                ;
 EChar.       Exp16 ::= Char                    ;
-EInt.        Exp16 ::= Integer                 ;
+EInteger.    Exp16 ::= Integer                 ;
 EDouble.     Exp16 ::= Double                  ;
 
 internal ETyped. Exp16 ::= "(" Exp ":" Type ")" ;
@@ -123,7 +128,3 @@ separator nonempty String "" ;
 token Id (letter (letter | digit | '_')*) ;
 
 separator nonempty Id "," ;
-
-comment "#" ;
-comment "//" ;
-comment "/*" "*/" ;
