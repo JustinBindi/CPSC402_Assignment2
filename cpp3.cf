@@ -5,9 +5,9 @@ comment "//" ;
 comment "/*" "*/" ;
 
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DFunc.     Def ::= Type Id "(" [Type] ")" ";" ;
+DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 DFunIL.    Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DFuncIL.   Def ::= "inline" Type Id "(" [Arg] ")" ";" ;
+DFuncIL.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
 
 DDecl.	   Def ::= Decl ;
 
