@@ -33,7 +33,7 @@ separator Arg "," ;
 
 SExp. Stm ::= Exp ";" ;
 SDecl.  Stm ::= Decl ";" ;
-SInit.  Stm ::= Type Id "=" Exp ";" ;
+SInit.  Stm ::= Init ;
 SReturn. Stm ::= "return" Exp ";"                ;
 SReturnVoid. Stm ::= "return" ";" ;
 SWhile.  Stm ::= "while" "(" Exp ")" Stm         ;
@@ -50,6 +50,7 @@ terminator Stm "" ;
 DeclaSim. Decl ::= Type [Id] ;
 DeclaConst. Decl ::= "const" Type Id ;
 
+IDef.      Init ::= Type Id "=" Exp ";" ;
 
 
 
