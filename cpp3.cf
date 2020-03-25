@@ -5,7 +5,7 @@ comment "//" ;
 comment "/*" "*/" ;
 
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
-DFunc.     Def ::= Type Id "(" [Type] ")" ";" ;
+-- DFunc.     Def ::= Type Id "(" [Type] ")" ";" ;
 DFunIL.    Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFuncIL.   Def ::= "inline" Type Id "(" [Arg] ")" ";" ;
 
@@ -49,7 +49,7 @@ IDef.    Init ::= Type Id "=" Exp ";" ;
 
 TypRef.      Type1 ::= Type2 "&" ;
 TypConst.	   Type2 ::= "const" Type3 ;
--- TypQC.       Type3 ::= QConst ;
+TypQC.       Type3 ::= QConst ;
 TypVoid.     Type3 ::= "void" ;
 TypInteger.  Type3 ::= "int" ;
 TypDouble.   Type3 ::= "double" ;
