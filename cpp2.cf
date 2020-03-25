@@ -4,7 +4,7 @@ DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
 DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
-DDecl.	    Def ::= Decl ;
+DDecls.	    Def ::= Decls ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
 DTypDef.   Def ::= "typedef" Type Id ";" ;
