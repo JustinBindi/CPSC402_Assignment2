@@ -2,6 +2,8 @@ PDefs. Program ::= [Def] ;
 
 DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFunc.     Def ::= Type Id "(" [Arg] ")" ";" ;
+DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
 
 DUsing.    Def ::= "using" QConst ";"    ;
 DTypDef.   Def ::= "typedef" Type Id ";" ;
