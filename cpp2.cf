@@ -4,24 +4,18 @@ DFunc.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
 DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
 DDecl.	    Def ::= Decl ;
-
 DUsing.    Def ::= "using" QConst ";"    ;
 DTemp.      Def ::= Type Id "(" [Type] ")" ";" ;
-
 DTypDef.   Def ::= "typedef" Type Id ";" ;
 DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
 DInit.      Def ::= Init ;
 DStruct.    Def ::= "struct" Id "{" [Decl] "}" ";" ;
 
 
-
 terminator Def "" ;
 
-DDef. Decl ::= Type [Id] ";"    ;
-
-
-
 ADecl. Arg ::= Type Id ;
+
 
 
 separator Arg "," ;
@@ -38,28 +32,16 @@ SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
 SMethod.     Stm ::= Type Id "(" [Arg] ")" "{" Stm "}" ;
 STypeDef.      Stm ::= "typedef" Type ;
 SStruct.     Stm ::= "struct" Id "{" [Decl] "}" ";" ;
-
-
-
 SDoWhi.  Stm ::= "do" Stm "while" "(" Exp ")" ";";
 SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
 
-
-
-
-
 terminator Stm "" ;
 
-
-DDef. Decl ::= Type [Id] ;
-
-
+DDef. Decl ::= Type [Id] ";"    ;
 
 terminator Decl "" ;
 
 IDef.      Init ::= Type Id "=" Exp ";" ;
-
-
 
 EThrow.      Exp1  ::= "throw" Exp2 ;
 
@@ -113,15 +95,11 @@ EDouble.     Exp16 ::= Double                  ;
 
 internal ETyped. Exp16 ::= "(" Exp ":" Type ")" ;
 
-
 coercions Exp 16 ;
 
 separator Exp3 "," ;
 
 separator nonempty Exp11 "" ;
-
-
-
 
 TypInt.  Type3 ::= "int"   ;
 TypBool. Type3 ::= "bool"  ;
@@ -130,28 +108,20 @@ TypDoub. Type3 ::= "double";
 TypQC.   Type3 ::= QConst  ;
 TCons.	 Type2 ::= "const" Type3 ;
 TypRef. Type1 ::= Type2 "&";
-
 coercions Type 3 ;
 
 
-
 token Id (letter (letter | digit | '_')*) ;
-
-
-                   
 
 separator Type   ","  ;
 separator nonempty String ""   ;
 separator nonempty Id     ","  ;
 separator nonempty Elmt   "::" ;
 
-QuConst. QConst ::= [Elmt] ;
+QDef. QConst ::= [Elmt] ;
 
-QCElmt. Elmt ::= Id        ;
-QCElntt. Elmt ::= Id "<" [Type] ">" ;
-
-
-
+NElmt. Elmt ::= Id        ;
+NElntt. Elmt ::= Id "<" [Type] ">" ;
 
 comment "//"      ;
 comment "/*" "*/" ;
