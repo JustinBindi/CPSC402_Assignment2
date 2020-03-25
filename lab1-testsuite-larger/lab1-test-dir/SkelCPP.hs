@@ -20,7 +20,7 @@ transDef x = case x of
   DFun type_ id args stms -> failure x
   DFunc type_ id types -> failure x
   DFunIL type_ id args stms -> failure x
-  DFuncIL type_ id types -> failure x
+  DFuncIL type_ id args -> failure x
   DDecl decl -> failure x
   DMain type_ args stms -> failure x
   DInit init -> failure x
@@ -54,13 +54,13 @@ transInit x = case x of
   IDef type_ id exp -> failure x
 transType :: Type -> Result
 transType x = case x of
-  TAmp type_ -> failure x
-  TCons type_ -> failure x
-  TQConst qconst -> failure x
-  TVoid -> failure x
-  TInt -> failure x
-  TDouble -> failure x
-  TBool -> failure x
+  TypRef type_ -> failure x
+  TypConst type_ -> failure x
+  TypQC qconst -> failure x
+  TypVoid -> failure x
+  TypInteger -> failure x
+  TypDouble -> failure x
+  TypBool -> failure x
 transQConst :: QConst -> Result
 transQConst x = case x of
   QDef elmts -> failure x

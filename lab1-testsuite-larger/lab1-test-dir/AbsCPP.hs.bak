@@ -11,15 +11,15 @@ data Program = PDefs [Def]
 
 data Def
     = DFun Type Id [Arg] [Stm]
-    | DFunc Type Id [Type]
+    | DFunc Type Id [Arg]
     | DFunIL Type Id [Arg] [Stm]
     | DFuncIL Type Id [Type]
     | DDecl Decl
-    | DUsing QConst
     | DMain Type [Arg] [Stm]
-    | DTypDef Type Id
     | DInit Init
     | DStruct Id [Decl]
+    | DUsing QConst
+    | DTypDef Type Id
   deriving (Eq, Ord, Show, Read)
 
 data Arg = ADecl Type Id
@@ -29,8 +29,6 @@ data Stm
     = SExp Exp
     | SDecl Decl
     | SInit Init
-    | SReturn Exp
-    | SReturnVoid
     | SWhile Exp Stm
     | SFor Stm Exp Exp Stm
     | SDoWhile Stm Exp
@@ -40,6 +38,8 @@ data Stm
     | SMethod Type Id [Arg] Stm
     | STypDef Type
     | SStruct Id [Decl]
+    | SReturn Exp
+    | SReturnVoid
   deriving (Eq, Ord, Show, Read)
 
 data Decl = DDef Type [Id]
@@ -49,13 +49,13 @@ data Init = IDef Type Id Exp
   deriving (Eq, Ord, Show, Read)
 
 data Type
-    = TInt
-    | TBool
-    | TVoid
-    | TDouble
-    | TQConst QConst
-    | TCons Type
-    | TAmp Type
+    = TypRef Type
+    | TypConst Type
+    | TypQC QConst
+    | TypVoid
+    | TypInteger
+    | TypDouble
+    | TypBool
   deriving (Eq, Ord, Show, Read)
 
 data QConst = QDef [Elmt]
@@ -100,7 +100,7 @@ data Exp
     | EFalse
     | EString [String]
     | EChar Char
-    | EInt Integer
+    | EInteger Integer
     | EDouble Double
     | ETyped Exp Type
   deriving (Eq, Ord, Show, Read)

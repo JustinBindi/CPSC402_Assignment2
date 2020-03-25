@@ -102,7 +102,7 @@ instance Print AbsCPP.Def where
     AbsCPP.DFun type_ id args stms -> prPrec i 0 (concatD [prt 0 type_, prt 0 id, doc (showString "("), prt 0 args, doc (showString ")"), doc (showString "{"), prt 0 stms, doc (showString "}")])
     AbsCPP.DFunc type_ id types -> prPrec i 0 (concatD [prt 0 type_, prt 0 id, doc (showString "("), prt 0 types, doc (showString ")"), doc (showString ";")])
     AbsCPP.DFunIL type_ id args stms -> prPrec i 0 (concatD [doc (showString "inline"), prt 0 type_, prt 0 id, doc (showString "("), prt 0 args, doc (showString ")"), doc (showString "{"), prt 0 stms, doc (showString "}")])
-    AbsCPP.DFuncIL type_ id types -> prPrec i 0 (concatD [doc (showString "inline"), prt 0 type_, prt 0 id, doc (showString "("), prt 0 types, doc (showString ")"), doc (showString ";")])
+    AbsCPP.DFuncIL type_ id args -> prPrec i 0 (concatD [doc (showString "inline"), prt 0 type_, prt 0 id, doc (showString "("), prt 0 args, doc (showString ")"), doc (showString ";")])
     AbsCPP.DDecl decl -> prPrec i 0 (concatD [prt 0 decl])
     AbsCPP.DMain type_ args stms -> prPrec i 0 (concatD [prt 0 type_, doc (showString "main"), doc (showString "("), prt 0 args, doc (showString ")"), doc (showString "{"), prt 0 stms, doc (showString "}")])
     AbsCPP.DInit init -> prPrec i 0 (concatD [prt 0 init])
@@ -162,13 +162,13 @@ instance Print AbsCPP.Init where
 
 instance Print AbsCPP.Type where
   prt i e = case e of
-    AbsCPP.TAmp type_ -> prPrec i 1 (concatD [prt 2 type_, doc (showString "&")])
-    AbsCPP.TCons type_ -> prPrec i 2 (concatD [doc (showString "const"), prt 3 type_])
-    AbsCPP.TQConst qconst -> prPrec i 3 (concatD [prt 0 qconst])
-    AbsCPP.TVoid -> prPrec i 3 (concatD [doc (showString "void")])
-    AbsCPP.TInt -> prPrec i 3 (concatD [doc (showString "int")])
-    AbsCPP.TDouble -> prPrec i 3 (concatD [doc (showString "double")])
-    AbsCPP.TBool -> prPrec i 3 (concatD [doc (showString "bool")])
+    AbsCPP.TypRef type_ -> prPrec i 1 (concatD [prt 2 type_, doc (showString "&")])
+    AbsCPP.TypConst type_ -> prPrec i 2 (concatD [doc (showString "const"), prt 3 type_])
+    AbsCPP.TypQC qconst -> prPrec i 3 (concatD [prt 0 qconst])
+    AbsCPP.TypVoid -> prPrec i 3 (concatD [doc (showString "void")])
+    AbsCPP.TypInteger -> prPrec i 3 (concatD [doc (showString "int")])
+    AbsCPP.TypDouble -> prPrec i 3 (concatD [doc (showString "double")])
+    AbsCPP.TypBool -> prPrec i 3 (concatD [doc (showString "bool")])
   prtList _ [] = concatD []
   prtList _ [x] = concatD [prt 0 x]
   prtList _ (x:xs) = concatD [prt 0 x, doc (showString ","), prt 0 xs]

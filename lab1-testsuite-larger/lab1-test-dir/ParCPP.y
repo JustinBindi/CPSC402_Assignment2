@@ -134,7 +134,7 @@ Def :: { Def }
 Def : Type Id '(' ListArg ')' '{' ListStm '}' { AbsCPP.DFun $1 $2 $4 (reverse $7) }
     | Type Id '(' ListType ')' ';' { AbsCPP.DFunc $1 $2 $4 }
     | 'inline' Type Id '(' ListArg ')' '{' ListStm '}' { AbsCPP.DFunIL $2 $3 $5 (reverse $8) }
-    | 'inline' Type Id '(' ListType ')' ';' { AbsCPP.DFuncIL $2 $3 $5 }
+    | 'inline' Type Id '(' ListArg ')' ';' { AbsCPP.DFuncIL $2 $3 $5 }
     | Decl { AbsCPP.DDecl $1 }
     | Type 'main' '(' ListArg ')' '{' ListStm '}' { AbsCPP.DMain $1 $4 (reverse $7) }
     | Init { AbsCPP.DInit $1 }
@@ -173,15 +173,15 @@ ListDecl : {- empty -} { [] } | ListDecl Decl { flip (:) $1 $2 }
 Init :: { Init }
 Init : Type Id '=' Exp ';' { AbsCPP.IDef $1 $2 $4 }
 Type1 :: { Type }
-Type1 : Type2 '&' { AbsCPP.TAmp $1 } | Type2 { $1 }
+Type1 : Type2 '&' { AbsCPP.TypRef $1 } | Type2 { $1 }
 Type2 :: { Type }
-Type2 : 'const' Type3 { AbsCPP.TCons $2 } | Type3 { $1 }
+Type2 : 'const' Type3 { AbsCPP.TypConst $2 } | Type3 { $1 }
 Type3 :: { Type }
-Type3 : QConst { AbsCPP.TQConst $1 }
-      | 'void' { AbsCPP.TVoid }
-      | 'int' { AbsCPP.TInt }
-      | 'double' { AbsCPP.TDouble }
-      | 'bool' { AbsCPP.TBool }
+Type3 : QConst { AbsCPP.TypQC $1 }
+      | 'void' { AbsCPP.TypVoid }
+      | 'int' { AbsCPP.TypInteger }
+      | 'double' { AbsCPP.TypDouble }
+      | 'bool' { AbsCPP.TypBool }
       | '(' Type ')' { $2 }
 ListType :: { [Type] }
 ListType : {- empty -} { [] }

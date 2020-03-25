@@ -18,15 +18,15 @@ transProgram x = case x of
 transDef :: Def -> Result
 transDef x = case x of
   DFun type_ id args stms -> failure x
-  DFunc type_ id types -> failure x
+  DFunc type_ id args -> failure x
   DFunIL type_ id args stms -> failure x
   DFuncIL type_ id types -> failure x
   DDecl decl -> failure x
-  DUsing qconst -> failure x
   DMain type_ args stms -> failure x
-  DTypDef type_ id -> failure x
   DInit init -> failure x
   DStruct id decls -> failure x
+  DUsing qconst -> failure x
+  DTypDef type_ id -> failure x
 transArg :: Arg -> Result
 transArg x = case x of
   ADecl type_ id -> failure x
@@ -35,8 +35,6 @@ transStm x = case x of
   SExp exp -> failure x
   SDecl decl -> failure x
   SInit init -> failure x
-  SReturn exp -> failure x
-  SReturnVoid -> failure x
   SWhile exp stm -> failure x
   SFor stm1 exp1 exp2 stm2 -> failure x
   SDoWhile stm exp -> failure x
@@ -46,6 +44,8 @@ transStm x = case x of
   SMethod type_ id args stm -> failure x
   STypDef type_ -> failure x
   SStruct id decls -> failure x
+  SReturn exp -> failure x
+  SReturnVoid -> failure x
 transDecl :: Decl -> Result
 transDecl x = case x of
   DDef type_ ids -> failure x
@@ -54,13 +54,13 @@ transInit x = case x of
   IDef type_ id exp -> failure x
 transType :: Type -> Result
 transType x = case x of
-  TInt -> failure x
-  TBool -> failure x
-  TVoid -> failure x
-  TDouble -> failure x
-  TQConst qconst -> failure x
-  TCons type_ -> failure x
-  TAmp type_ -> failure x
+  TypRef type_ -> failure x
+  TypConst type_ -> failure x
+  TypQC qconst -> failure x
+  TypVoid -> failure x
+  TypInteger -> failure x
+  TypDouble -> failure x
+  TypBool -> failure x
 transQConst :: QConst -> Result
 transQConst x = case x of
   QDef elmts -> failure x
@@ -105,7 +105,7 @@ transExp x = case x of
   EFalse -> failure x
   EString strings -> failure x
   EChar char -> failure x
-  EInt integer -> failure x
+  EInteger integer -> failure x
   EDouble double -> failure x
   ETyped exp type_ -> failure x
 

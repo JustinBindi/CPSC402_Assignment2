@@ -11,7 +11,6 @@ state 131 contains 1 reduce/reduce conflicts.
 state 233 contains 1 shift/reduce conflicts.
 state 234 contains 1 shift/reduce conflicts.
 state 264 contains 1 reduce/reduce conflicts.
-state 271 contains 1 reduce/reduce conflicts.
 state 292 contains 1 shift/reduce conflicts.
 
 -----------------------------------------------------------------------------
@@ -65,7 +64,7 @@ Grammar
 	Def -> Type Id '(' ListArg ')' '{' ListStm '}'     (45)
 	Def -> Type Id '(' ListType ')' ';'                (46)
 	Def -> 'inline' Type Id '(' ListArg ')' '{' ListStm '}'   (47)
-	Def -> 'inline' Type Id '(' ListType ')' ';'       (48)
+	Def -> 'inline' Type Id '(' ListArg ')' ';'        (48)
 	Def -> Decl                                        (49)
 	Def -> Type 'main' '(' ListArg ')' '{' ListStm '}'   (50)
 	Def -> Init                                        (51)
@@ -4168,7 +4167,7 @@ State 150
 State 151
 
 	Def -> 'inline' . Type Id '(' ListArg ')' '{' ListStm '}'    (rule 47)
-	Def -> 'inline' . Type Id '(' ListType ')' ';'      (rule 48)
+	Def -> 'inline' . Type Id '(' ListArg ')' ';'       (rule 48)
 
 	'('            shift, and enter state 110
 	'bool'         shift, and enter state 111
@@ -4307,7 +4306,7 @@ State 160
 State 161
 
 	Def -> 'inline' Type . Id '(' ListArg ')' '{' ListStm '}'    (rule 47)
-	Def -> 'inline' Type . Id '(' ListType ')' ';'      (rule 48)
+	Def -> 'inline' Type . Id '(' ListArg ')' ';'       (rule 48)
 
 	L_Id           shift, and enter state 43
 
@@ -7285,7 +7284,7 @@ State 264
 State 265
 
 	Def -> 'inline' Type Id . '(' ListArg ')' '{' ListStm '}'    (rule 47)
-	Def -> 'inline' Type Id . '(' ListType ')' ';'      (rule 48)
+	Def -> 'inline' Type Id . '(' ListArg ')' ';'       (rule 48)
 
 	'('            shift, and enter state 271
 
@@ -7359,7 +7358,7 @@ State 270
 	'double'       shift, and enter state 113
 	'int'          shift, and enter state 114
 	'void'         shift, and enter state 115
-	'}'            shift, and enter state 300
+	'}'            shift, and enter state 299
 	L_Id           shift, and enter state 43
 
 	Id             goto state 50
@@ -7375,12 +7374,10 @@ State 270
 State 271
 
 	Def -> 'inline' Type Id '(' . ListArg ')' '{' ListStm '}'    (rule 47)
-	Def -> 'inline' Type Id '(' . ListType ')' ';'      (rule 48)
+	Def -> 'inline' Type Id '(' . ListArg ')' ';'       (rule 48)
 
 	'('            shift, and enter state 110
-	')'            reduce using rule 91
-			(reduce using rule 58)
-
+	')'            reduce using rule 58
 	'bool'         shift, and enter state 111
 	'const'        shift, and enter state 112
 	'double'       shift, and enter state 113
@@ -7394,8 +7391,7 @@ State 271
 	Type1          goto state 105
 	Type2          goto state 106
 	Type3          goto state 107
-	ListType       goto state 299
-	Type           goto state 274
+	Type           goto state 144
 	QConst         goto state 109
 	Elmt           goto state 52
 	ListElmt       goto state 53
@@ -7903,14 +7899,14 @@ State 289
 
 	Stm -> Type Id '(' ListArg ')' . '{' Stm '}'        (rule 70)
 
-	'{'            shift, and enter state 311
+	'{'            shift, and enter state 309
 
 
 State 290
 
 	Stm -> 'do' Stm 'while' '(' Exp . ')' ';'           (rule 66)
 
-	')'            shift, and enter state 310
+	')'            shift, and enter state 308
 
 
 State 291
@@ -7952,7 +7948,7 @@ State 291
 	Exp14          goto state 57
 	Exp15          goto state 58
 	Exp16          goto state 59
-	Exp            goto state 309
+	Exp            goto state 307
 	Exp5           goto state 77
 	Exp6           goto state 78
 	Exp7           goto state 79
@@ -7972,7 +7968,7 @@ State 292
 	'const'        reduce using rule 68
 	'do'           reduce using rule 68
 	'double'       reduce using rule 68
-	'else'         shift, and enter state 308
+	'else'         shift, and enter state 306
 			(reduce using rule 68)
 
 	'false'        reduce using rule 68
@@ -8000,7 +7996,7 @@ State 293
 
 	Stm -> 'struct' Id '{' ListDecl '}' . ';'           (rule 72)
 
-	';'            shift, and enter state 307
+	';'            shift, and enter state 305
 
 
 State 294
@@ -8042,45 +8038,39 @@ State 295
 
 	Def -> Type 'main' '(' ListArg ')' . '{' ListStm '}'    (rule 50)
 
-	'{'            shift, and enter state 306
+	'{'            shift, and enter state 304
 
 
 State 296
 
 	Def -> Type Id '(' ListType ')' . ';'               (rule 46)
 
-	';'            shift, and enter state 305
+	';'            shift, and enter state 303
 
 
 State 297
 
 	Def -> Type Id '(' ListArg ')' . '{' ListStm '}'    (rule 45)
 
-	'{'            shift, and enter state 304
+	'{'            shift, and enter state 302
 
 
 State 298
 
 	Def -> 'inline' Type Id '(' ListArg . ')' '{' ListStm '}'    (rule 47)
+	Def -> 'inline' Type Id '(' ListArg . ')' ';'       (rule 48)
 
-	')'            shift, and enter state 303
+	')'            shift, and enter state 301
 
 
 State 299
 
-	Def -> 'inline' Type Id '(' ListType . ')' ';'      (rule 48)
+	Def -> 'struct' Id '{' ListDecl '}' . ';'           (rule 52)
 
-	')'            shift, and enter state 302
+	';'            shift, and enter state 300
 
 
 State 300
-
-	Def -> 'struct' Id '{' ListDecl '}' . ';'           (rule 52)
-
-	';'            shift, and enter state 301
-
-
-State 301
 
 	Def -> 'struct' Id '{' ListDecl '}' ';' .           (rule 52)
 
@@ -8098,21 +8088,16 @@ State 301
 	%eof           reduce using rule 52
 
 
-State 302
-
-	Def -> 'inline' Type Id '(' ListType ')' . ';'      (rule 48)
-
-	';'            shift, and enter state 319
-
-
-State 303
+State 301
 
 	Def -> 'inline' Type Id '(' ListArg ')' . '{' ListStm '}'    (rule 47)
+	Def -> 'inline' Type Id '(' ListArg ')' . ';'       (rule 48)
 
-	'{'            shift, and enter state 318
+	';'            shift, and enter state 316
+	'{'            shift, and enter state 317
 
 
-State 304
+State 302
 
 	Def -> Type Id '(' ListArg ')' '{' . ListStm '}'    (rule 45)
 
@@ -8144,9 +8129,9 @@ State 304
 	L_quoted       reduce using rule 75
 	L_Id           reduce using rule 75
 
-	ListStm        goto state 317
+	ListStm        goto state 315
 
-State 305
+State 303
 
 	Def -> Type Id '(' ListType ')' ';' .               (rule 46)
 
@@ -8164,7 +8149,7 @@ State 305
 	%eof           reduce using rule 46
 
 
-State 306
+State 304
 
 	Def -> Type 'main' '(' ListArg ')' '{' . ListStm '}'    (rule 50)
 
@@ -8196,9 +8181,9 @@ State 306
 	L_quoted       reduce using rule 75
 	L_Id           reduce using rule 75
 
-	ListStm        goto state 316
+	ListStm        goto state 314
 
-State 307
+State 305
 
 	Stm -> 'struct' Id '{' ListDecl '}' ';' .           (rule 72)
 
@@ -8233,7 +8218,7 @@ State 307
 	%eof           reduce using rule 72
 
 
-State 308
+State 306
 
 	Stm -> 'if' '(' Exp ')' Stm 'else' . Stm            (rule 69)
 
@@ -8269,7 +8254,7 @@ State 308
 	Double         goto state 49
 	String         goto state 44
 	Id             goto state 50
-	Stm            goto state 315
+	Stm            goto state 313
 	Decl           goto state 128
 	Init           goto state 129
 	Type1          goto state 105
@@ -8298,21 +8283,21 @@ State 308
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 309
+State 307
 
 	Stm -> 'for' '(' Stm Exp ';' Exp . ')' Stm          (rule 65)
 
-	')'            shift, and enter state 314
+	')'            shift, and enter state 312
 
 
-State 310
+State 308
 
 	Stm -> 'do' Stm 'while' '(' Exp ')' . ';'           (rule 66)
 
-	';'            shift, and enter state 313
+	';'            shift, and enter state 311
 
 
-State 311
+State 309
 
 	Stm -> Type Id '(' ListArg ')' '{' . Stm '}'        (rule 70)
 
@@ -8348,7 +8333,7 @@ State 311
 	Double         goto state 49
 	String         goto state 44
 	Id             goto state 50
-	Stm            goto state 312
+	Stm            goto state 310
 	Decl           goto state 128
 	Init           goto state 129
 	Type1          goto state 105
@@ -8377,14 +8362,14 @@ State 311
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 312
+State 310
 
 	Stm -> Type Id '(' ListArg ')' '{' Stm . '}'        (rule 70)
 
-	'}'            shift, and enter state 324
+	'}'            shift, and enter state 322
 
 
-State 313
+State 311
 
 	Stm -> 'do' Stm 'while' '(' Exp ')' ';' .           (rule 66)
 
@@ -8419,7 +8404,7 @@ State 313
 	%eof           reduce using rule 66
 
 
-State 314
+State 312
 
 	Stm -> 'for' '(' Stm Exp ';' Exp ')' . Stm          (rule 65)
 
@@ -8455,7 +8440,7 @@ State 314
 	Double         goto state 49
 	String         goto state 44
 	Id             goto state 50
-	Stm            goto state 323
+	Stm            goto state 321
 	Decl           goto state 128
 	Init           goto state 129
 	Type1          goto state 105
@@ -8484,7 +8469,7 @@ State 314
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 315
+State 313
 
 	Stm -> 'if' '(' Exp ')' Stm 'else' Stm .            (rule 69)
 
@@ -8519,7 +8504,7 @@ State 315
 	%eof           reduce using rule 69
 
 
-State 316
+State 314
 
 	Def -> Type 'main' '(' ListArg ')' '{' ListStm . '}'    (rule 50)
 	ListStm -> ListStm . Stm                            (rule 76)
@@ -8545,7 +8530,7 @@ State 316
 	'void'         shift, and enter state 115
 	'while'        shift, and enter state 140
 	'{'            shift, and enter state 141
-	'}'            shift, and enter state 322
+	'}'            shift, and enter state 320
 	L_charac       shift, and enter state 40
 	L_integ        shift, and enter state 69
 	L_doubl        shift, and enter state 70
@@ -8586,7 +8571,7 @@ State 316
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 317
+State 315
 
 	Def -> Type Id '(' ListArg ')' '{' ListStm . '}'    (rule 45)
 	ListStm -> ListStm . Stm                            (rule 76)
@@ -8612,7 +8597,7 @@ State 317
 	'void'         shift, and enter state 115
 	'while'        shift, and enter state 140
 	'{'            shift, and enter state 141
-	'}'            shift, and enter state 321
+	'}'            shift, and enter state 319
 	L_charac       shift, and enter state 40
 	L_integ        shift, and enter state 69
 	L_doubl        shift, and enter state 70
@@ -8653,7 +8638,25 @@ State 317
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 318
+State 316
+
+	Def -> 'inline' Type Id '(' ListArg ')' ';' .       (rule 48)
+
+	'('            reduce using rule 48
+	'bool'         reduce using rule 48
+	'const'        reduce using rule 48
+	'double'       reduce using rule 48
+	'inline'       reduce using rule 48
+	'int'          reduce using rule 48
+	'struct'       reduce using rule 48
+	'typedef'      reduce using rule 48
+	'using'        reduce using rule 48
+	'void'         reduce using rule 48
+	L_Id           reduce using rule 48
+	%eof           reduce using rule 48
+
+
+State 317
 
 	Def -> 'inline' Type Id '(' ListArg ')' '{' . ListStm '}'    (rule 47)
 
@@ -8685,27 +8688,9 @@ State 318
 	L_quoted       reduce using rule 75
 	L_Id           reduce using rule 75
 
-	ListStm        goto state 320
+	ListStm        goto state 318
 
-State 319
-
-	Def -> 'inline' Type Id '(' ListType ')' ';' .      (rule 48)
-
-	'('            reduce using rule 48
-	'bool'         reduce using rule 48
-	'const'        reduce using rule 48
-	'double'       reduce using rule 48
-	'inline'       reduce using rule 48
-	'int'          reduce using rule 48
-	'struct'       reduce using rule 48
-	'typedef'      reduce using rule 48
-	'using'        reduce using rule 48
-	'void'         reduce using rule 48
-	L_Id           reduce using rule 48
-	%eof           reduce using rule 48
-
-
-State 320
+State 318
 
 	Def -> 'inline' Type Id '(' ListArg ')' '{' ListStm . '}'    (rule 47)
 	ListStm -> ListStm . Stm                            (rule 76)
@@ -8731,7 +8716,7 @@ State 320
 	'void'         shift, and enter state 115
 	'while'        shift, and enter state 140
 	'{'            shift, and enter state 141
-	'}'            shift, and enter state 325
+	'}'            shift, and enter state 323
 	L_charac       shift, and enter state 40
 	L_integ        shift, and enter state 69
 	L_doubl        shift, and enter state 70
@@ -8772,7 +8757,7 @@ State 320
 	Exp7           goto state 79
 	ListString     goto state 61
 
-State 321
+State 319
 
 	Def -> Type Id '(' ListArg ')' '{' ListStm '}' .    (rule 45)
 
@@ -8790,7 +8775,7 @@ State 321
 	%eof           reduce using rule 45
 
 
-State 322
+State 320
 
 	Def -> Type 'main' '(' ListArg ')' '{' ListStm '}' .    (rule 50)
 
@@ -8808,7 +8793,7 @@ State 322
 	%eof           reduce using rule 50
 
 
-State 323
+State 321
 
 	Stm -> 'for' '(' Stm Exp ';' Exp ')' Stm .          (rule 65)
 
@@ -8843,7 +8828,7 @@ State 323
 	%eof           reduce using rule 65
 
 
-State 324
+State 322
 
 	Stm -> Type Id '(' ListArg ')' '{' Stm '}' .        (rule 70)
 
@@ -8878,7 +8863,7 @@ State 324
 	%eof           reduce using rule 70
 
 
-State 325
+State 323
 
 	Def -> 'inline' Type Id '(' ListArg ')' '{' ListStm '}' .    (rule 47)
 
@@ -8902,4 +8887,4 @@ Grammar Totals
 Number of rules: 163
 Number of terminals: 59
 Number of non-terminals: 83
-Number of states: 326
+Number of states: 324

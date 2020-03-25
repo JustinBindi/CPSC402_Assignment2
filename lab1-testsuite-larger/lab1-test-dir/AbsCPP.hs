@@ -13,7 +13,7 @@ data Def
     = DFun Type Id [Arg] [Stm]
     | DFunc Type Id [Type]
     | DFunIL Type Id [Arg] [Stm]
-    | DFuncIL Type Id [Type]
+    | DFuncIL Type Id [Arg]
     | DDecl Decl
     | DMain Type [Arg] [Stm]
     | DInit Init
@@ -49,13 +49,13 @@ data Init = IDef Type Id Exp
   deriving (Eq, Ord, Show, Read)
 
 data Type
-    = TAmp Type
-    | TCons Type
-    | TQConst QConst
-    | TVoid
-    | TInt
-    | TDouble
-    | TBool
+    = TypRef Type
+    | TypConst Type
+    | TypQC QConst
+    | TypVoid
+    | TypInteger
+    | TypDouble
+    | TypBool
   deriving (Eq, Ord, Show, Read)
 
 data QConst = QDef [Elmt]
