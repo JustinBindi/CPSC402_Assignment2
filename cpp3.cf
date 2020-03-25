@@ -1,10 +1,11 @@
 PDefs.   Program ::= [Def] ;
 
 DFunc.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DTemp.      Def ::= Type "(" [Type] ")" ";" ;
 DFInline.   Def ::= "inline" Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DTInline.   Def ::= "inline" Type "(" [Type] ")" ";" ;
 DDecl.	    Def ::= Decl ;
-DUse.	    Def ::= "using" QConst ";" ;
-DTInline.   Def ::= "inline" Type Id "(" [Type] ")" ";" ;
+DUse.	      Def ::= "using" QConst ";" ;
 DMain.      Def ::= Type "main" "(" [Arg] ")" "{" [Stm] "}" ;
 DAlias.     Def ::= "typedef" Type Id ";" ;
 DInit.      Def ::= Init ;
