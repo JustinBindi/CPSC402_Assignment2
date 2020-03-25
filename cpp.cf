@@ -1,65 +1,122 @@
-PDefs.   Program ::= [Def] ;
+-- Program Def. :
+PDefs. Program ::= [Def] ;
 
-DFun.    Def    ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+-- Lines to skip :
+comment "//"      ;
+comment "/*" "*/" ;
+comment "#"       ;
 
-terminator Def "" ;
+-- Definitions of Defs :
+DFun.      Def ::= Type Id "(" [Arg] ")" "{" [Stm] "}" ;
+DFunEmpty. Def ::= Type Id "(" [Arg] ")" ";"           ;
+DUsing.    Def ::= "using" QConst ";"    ;
+DTypDef.   Def ::= "typedef" Type Id ";" ;
+DDeclGlob. Def ::= Type [VarGlob] ";"    ;
 
-ADecl.   Arg    ::= Type Id ;
+VarTotal.  VarGlob ::= Id "=" Exp ;
+VarSimple. VarGlob ::= Id ;
 
-separator Arg "," ;
-
-SExp.        Stm ::= Exp ";" ;
-SDecls.      Stm ::= Type [Id] ";" ;
-SInit.       Stm ::= Type Id "=" Exp ";" ;
-SReturn.     Stm ::= "return" Exp ";" ;
-SReturnVoid. Stm ::= "return" ";" ;
-SWhile.      Stm ::= "while" "(" Exp ")" Stm ;
-SBlock.      Stm ::= "{" [Stm] "}" ;
-SIfElse.     Stm ::= "if" "(" Exp ")" Stm "else" Stm ;
-
-terminator Stm "" ;
-
-ETrue.   Exp15  ::= "true" ;
-EFalse.  Exp15  ::= "false" ;
-EInt.    Exp15  ::= Integer ;
-EDouble. Exp15  ::= Double ;
-EString. Exp15  ::= String ;
-EId.     Exp15  ::= Id ; 
-
-EApp.    Exp15  ::= Id "(" [Exp] ")" ;
-
-EPIncr.  Exp14  ::= Exp15 "++" ;
-EPDecr.  Exp14  ::= Exp15 "--" ;
-
-EIncr.   Exp13  ::= "++" Exp14 ;
-EDecr.   Exp13  ::= "--" Exp14 ;
-
-ETimes.  Exp12  ::= Exp12 "*"  Exp13 ;
-EDiv.    Exp12  ::= Exp12 "/"  Exp13 ;
-EPlus.   Exp11  ::= Exp11 "+"  Exp12 ;
-EMinus.  Exp11  ::= Exp11 "-"  Exp12 ;
-ELt.     Exp9   ::= Exp9  "<"  Exp10 ;
-EGt.     Exp9   ::= Exp9  ">"  Exp10 ;
-ELtEq.   Exp9   ::= Exp9  "<=" Exp10 ;
-EGtEq.   Exp9   ::= Exp9  ">=" Exp10 ;
-EEq.     Exp8   ::= Exp8  "==" Exp9 ;
-ENEq.    Exp8   ::= Exp8  "!=" Exp9 ;
-EAnd.    Exp4   ::= Exp4  "&&" Exp5 ;
-EOr.     Exp3   ::= Exp3  "||" Exp4 ;
-EAss.    Exp2   ::= Exp3 "=" Exp2 ;
-
-internal ETyped. Exp15 ::= "(" Exp ":" Type ")" ;
-
-coercions Exp 15 ;
-
-separator Exp "," ;
-
-rules Type   ::= "bool" | "int" | "double" | "void" | "string" ;
-
+-- Tokens :
 token Id (letter (letter | digit | '_')*) ;
 
-separator nonempty Id "," ;
+-- Arguments Defs :
+ADecl. Arg ::= Type Id ;
+AType. Arg ::= Type ;
+AConst. Arg ::= "const" Type Id ;
+AConstProt. Arg ::= "const" Type ;
 
-comment "#" ;
-comment "//" ;
-comment "/*" "*/" ;
+SExp. Stm ::= Exp ";" ;
+
+SDecl.  Stm ::= Declaration ";" ;
+--SDeclConst.  Stm ::= "const" Type VarGlob ";" ;
+STypDef. Stm ::= "typedef" Type Id ";" ;
+DeclaSim. Declaration ::= Type [VarGlob] ;
+DeclaConst. Declaration ::= "const" Type VarGlob ;
+
+SReturn. Stm ::= "return" Exp ";"          ;
+SWhile.  Stm ::= "while" "(" Exp ")" Stm   ;
+SDoWhi.  Stm ::= "do" Stm "while" "(" Exp ")" ";";
+SFor.    Stm ::= "for" "(" Declaration ";" Exp ";" Exp ")" Stm ;
+SBlock.  Stm ::= "{" [Stm] "}"             ;
+SIfElse. Stm ::= "if" "(" Exp ")" Stm Rest ;
+YesRest. Rest ::= "else" Stm ;
+NoRest.  Rest ::= ;
+
+------- Expressions def : -------
+-- Level 15 :
+EInt.    Exp15 ::= Integer  ;
+EDouble. Exp15 ::= Double   ;
+EChar.   Exp15 ::= Char     ;
+EString. Exp15 ::= [String] ;
+ETrue.   Exp15 ::= "true"   ;
+EFalse.  Exp15 ::= "false"  ;
+EQConst. Exp15 ::= QConst   ;
+
+-- Level 14 :
+EPIncr.  Exp14 ::= Exp14 "++" ;
+EPDecr.  Exp14 ::= Exp14 "--" ;
+ECall.   Exp14 ::= Exp14 "(" [Exp] ")" ;
+EArr.    Exp14 ::= Exp14 "["  Exp  "]" ;
+ERCall.  Exp14 ::= Exp14 "."  Exp15    ;
+EAssign. Exp14 ::= Exp14 "->" Exp15    ;
+
+-- Level 13 :
+EIncr.   Exp13 ::= "++" Exp13 ;
+EDecr.   Exp13 ::= "--" Exp13 ;
+ENeg.    Exp13 ::= "-"  Exp13 ;
+ENegB.   Exp13 ::= "!"  Exp13 ;
+EPoint.  Exp13 ::= "*"  Exp13 ;
+
+-- Levels 8, 9, 10, 11 & 12 :
+EMul.    Exp12 ::= Exp12 "*"  Exp13 ;
+EDiv.    Exp12 ::= Exp12 "/"  Exp13 ;
+EMod.    Exp12 ::= Exp13 "%"  Exp12 ;
+EAdd.    Exp11 ::= Exp11 "+"  Exp12 ;
+ESub.    Exp11 ::= Exp11 "-"  Exp12 ;
+ESLeft.  Exp10 ::= Exp10 "<<" Exp11 ;
+ESRight. Exp10 ::= Exp10 ">>" Exp11 ;
+ELt.     Exp9  ::= Exp9  "<"  Exp10 ;
+EGt.     Exp9  ::= Exp9  ">"  Exp10 ;
+ELEq.    Exp9  ::= Exp9  "<=" Exp10 ;
+EGEq.    Exp9  ::= Exp9  ">=" Exp10 ;
+EEq.     Exp8  ::= Exp8  "==" Exp9  ;
+ENEq.    Exp8  ::= Exp8  "!=" Exp9  ;
+
+-- Levels < 5 :
+EAnd.    Exp4 ::= Exp4  "&&" Exp5 ;
+EOr.     Exp3 ::= Exp3  "||" Exp4 ;
+EAss.    Exp2 ::= Exp3  "="  Exp2 ;
+EAssMin. Exp2 ::= Exp3  "-=" Exp2 ;
+EAssPlu. Exp2 ::= Exp3  "+=" Exp2 ;
+ECond.   Exp1 ::= Exp  "?"  Exp2 ":" Exp2 ;
+EExcep.  Exp2 ::= "throw" Exp ;
+
+
+-- Definition of Qualified Const. (~= Ids) :
+QuConst. QConst ::= [Elmt] ;
+QCElmt. Elmt ::= Id        ;
+
+-- Types def :
+TypInt.  Type ::= "int"   ;
+TypChar. Type ::= "char"  ;
+TypBool. Type ::= "bool"  ;
+TypVoid. Type ::= "void"  ;
+TypDoub. Type ::= "double";
+TypQC.   Type ::= QConst  ;
+TypAddr. Type ::= Type "&";
+
+-- Separators :
+separator Arg "," ;
+separator Exp "," ;
+separator nonempty Id     ","  ;
+separator nonempty Type   ","  ;
+separator nonempty String ""   ;
+separator nonempty Elmt   "::" ;
+separator nonempty VarGlob "," ;
+
+-- Terminators :
+terminator Stm "" ;
+terminator Def "" ;
+
+-- Coercions :
+coercions Exp 15 ;
