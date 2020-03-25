@@ -96,7 +96,8 @@ coercions Exp 15 ;
 separator Exp "," ;
 
 
-
+L1a. NameListId ::= Id ;                             
+L1b. NameListId ::= Id "::" NameListId ;    
 
 QuConst. QConst ::= [NameListId] ;
 
@@ -115,8 +116,7 @@ TypRef. Type ::= Type "&";
 token Id (letter (letter | digit | '_')*) ;
 
 
-L1a. NameListId ::= Id ;                             
-L1b. NameListId ::= Id "::" NameListId ;                       
+                   
 
 separator nonempty Type   ","  ;
 separator nonempty String ""   ;
