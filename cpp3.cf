@@ -46,7 +46,6 @@ TInt.      Type3 ::= "int" ;
 TBool.     Type3 ::= "bool" ;
 TVoid.     Type3 ::= "void" ;
 TDouble.   Type3 ::= "double" ;
-TQConst.   Type3 ::= QConst ;
 TCons.	   Type2 ::= "const" Type3 ;
 TAmp.      Type1 ::= Type2 "&" ;
 
