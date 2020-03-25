@@ -47,9 +47,6 @@ SFor.    Stm ::= "for" "(" Stm Exp ";" Exp ")" Stm ;
 
 
 
-STypDef. Stm ::= "typedef" Type ;
-
-
 
 terminator Stm "" ;
 
