@@ -49,7 +49,7 @@ IDef.    Init ::= Type Id "=" Exp ";" ;
 
 TypRef.      Type1 ::= Type2 "&" ;
 TypConst.	   Type2 ::= "const" Type3 ;
-TypQC.       Type3 ::= QConst ;
+-- TypQC.       Type3 ::= QConst ;
 TypVoid.     Type3 ::= "void" ;
 TypInteger.  Type3 ::= "int" ;
 TypDouble.   Type3 ::= "double" ;
@@ -107,7 +107,7 @@ ERefCall.    Exp14 ::= Exp14 "."  Exp15        ;
 EArray.      Exp15 ::= Exp16 "["  Exp11  "]"     ;
 ECall.       Exp15 ::= Exp16 "(" [Exp3] ")"     ;
 
--- EQConst.     Exp16 ::= QConst                  ;
+EQConst.     Exp16 ::= QConst                  ;
 ETrue.       Exp16 ::= "true"                  ;
 EFalse.      Exp16 ::= "false"                 ;
 EString.     Exp16 ::= [String]                ;
