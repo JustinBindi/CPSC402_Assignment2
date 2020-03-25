@@ -10,14 +10,14 @@ data Program = PDefs [Def]
   deriving (Eq, Ord, Show, Read)
 
 data Def
-    = DFunc Type Id [Arg] [Stm]
-    | DFInline Type Id [Arg] [Stm]
-    | DTInline Type Id [Type]
+    = DFun Type Id [Arg] [Stm]
+    | DFunc Type Id [Type]
+    | DFunIL Type Id [Arg] [Stm]
+    | DFuncIL Type Id [Type]
     | DDecl Decl
     | DUsing QConst
-    | DTemp Type Id [Type]
-    | DTypDef Type Id
     | DMain Type [Arg] [Stm]
+    | DTypDef Type Id
     | DInit Init
     | DStruct Id [Decl]
   deriving (Eq, Ord, Show, Read)
@@ -32,14 +32,14 @@ data Stm
     | SReturn Exp
     | SReturnVoid
     | SWhile Exp Stm
+    | SFor Stm Exp Exp Stm
+    | SDoWhile Stm Exp
     | SBlock [Stm]
     | SIf Exp Stm
     | SIfElse Exp Stm Stm
     | SMethod Type Id [Arg] Stm
-    | STypeDef Type
+    | STypDef Type
     | SStruct Id [Decl]
-    | SDoWhi Stm Exp
-    | SFor Stm Exp Exp Stm
   deriving (Eq, Ord, Show, Read)
 
 data Decl = DDef Type [Id]
@@ -49,19 +49,19 @@ data Init = IDef Type Id Exp
   deriving (Eq, Ord, Show, Read)
 
 data Type
-    = TypInt
-    | TypBool
-    | TypVoid
-    | TypDoub
-    | TypQC QConst
+    = TInt
+    | TBool
+    | TVoid
+    | TDouble
+    | TQConst QConst
     | TCons Type
-    | TypRef Type
+    | TAmp Type
   deriving (Eq, Ord, Show, Read)
 
 data QConst = QDef [Elmt]
   deriving (Eq, Ord, Show, Read)
 
-data Elmt = NElmt Id | NElntt Id [Type]
+data Elmt = NId Id | NBrac Id [Type]
   deriving (Eq, Ord, Show, Read)
 
 data Exp

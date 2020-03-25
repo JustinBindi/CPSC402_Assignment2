@@ -58,7 +58,7 @@ The symbols used in CPP are the following:
   | . | [ | ] |
 
 ===Comments===
-Single-line comments begin with //, #.Multiple-line comments are  enclosed with /* and */.
+Single-line comments begin with #, //.Multiple-line comments are  enclosed with /* and */.
 
 ==The syntactic structure of CPP==
 Non-terminals are enclosed between < and >.
@@ -68,13 +68,13 @@ All other symbols are terminals.
 
   | //Program// | -> | //[Def]//
   | //Def// | -> | //Type// //Id// ``(`` //[Arg]// ``)`` ``{`` //[Stm]// ``}``
+  |  |  **|**  | //Type// //Id// ``(`` //[Type]// ``)`` ``;``
   |  |  **|**  | ``inline`` //Type// //Id// ``(`` //[Arg]// ``)`` ``{`` //[Stm]// ``}``
   |  |  **|**  | ``inline`` //Type// //Id// ``(`` //[Type]// ``)`` ``;``
   |  |  **|**  | //Decl//
   |  |  **|**  | ``using`` //QConst// ``;``
-  |  |  **|**  | //Type// //Id// ``(`` //[Type]// ``)`` ``;``
-  |  |  **|**  | ``typedef`` //Type// //Id// ``;``
   |  |  **|**  | //Type// ``main`` ``(`` //[Arg]// ``)`` ``{`` //[Stm]// ``}``
+  |  |  **|**  | ``typedef`` //Type// //Id// ``;``
   |  |  **|**  | //Init//
   |  |  **|**  | ``struct`` //Id// ``{`` //[Decl]// ``}`` ``;``
   | //[Def]// | -> | **eps**
@@ -84,19 +84,19 @@ All other symbols are terminals.
   |  |  **|**  | //Arg//
   |  |  **|**  | //Arg// ``,`` //[Arg]//
   | //Stm// | -> | //Exp// ``;``
-  |  |  **|**  | //Decl// ``;``
+  |  |  **|**  | //Decl//
   |  |  **|**  | //Init//
   |  |  **|**  | ``return`` //Exp// ``;``
   |  |  **|**  | ``return`` ``;``
   |  |  **|**  | ``while`` ``(`` //Exp// ``)`` //Stm//
+  |  |  **|**  | ``for`` ``(`` //Stm// //Exp// ``;`` //Exp// ``)`` //Stm//
+  |  |  **|**  | ``do`` //Stm// ``while`` ``(`` //Exp// ``)`` ``;``
   |  |  **|**  | ``{`` //[Stm]// ``}``
   |  |  **|**  | ``if`` ``(`` //Exp// ``)`` //Stm//
   |  |  **|**  | ``if`` ``(`` //Exp// ``)`` //Stm// ``else`` //Stm//
   |  |  **|**  | //Type// //Id// ``(`` //[Arg]// ``)`` ``{`` //Stm// ``}``
   |  |  **|**  | ``typedef`` //Type//
   |  |  **|**  | ``struct`` //Id// ``{`` //[Decl]// ``}`` ``;``
-  |  |  **|**  | ``do`` //Stm// ``while`` ``(`` //Exp// ``)`` ``;``
-  |  |  **|**  | ``for`` ``(`` //Stm// //Exp// ``;`` //Exp// ``)`` //Stm//
   | //[Stm]// | -> | **eps**
   |  |  **|**  | //Stm// //[Stm]//
   | //Decl// | -> | //Type// //[Id]// ``;``

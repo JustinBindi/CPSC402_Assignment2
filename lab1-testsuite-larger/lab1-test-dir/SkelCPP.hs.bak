@@ -17,14 +17,14 @@ transProgram x = case x of
   PDefs defs -> failure x
 transDef :: Def -> Result
 transDef x = case x of
-  DFunc type_ id args stms -> failure x
-  DFInline type_ id args stms -> failure x
-  DTInline type_ id types -> failure x
+  DFun type_ id args stms -> failure x
+  DFunc type_ id types -> failure x
+  DFunIL type_ id args stms -> failure x
+  DFuncIL type_ id types -> failure x
   DDecl decl -> failure x
   DUsing qconst -> failure x
-  DTemp type_ id types -> failure x
-  DTypDef type_ id -> failure x
   DMain type_ args stms -> failure x
+  DTypDef type_ id -> failure x
   DInit init -> failure x
   DStruct id decls -> failure x
 transArg :: Arg -> Result
@@ -38,14 +38,14 @@ transStm x = case x of
   SReturn exp -> failure x
   SReturnVoid -> failure x
   SWhile exp stm -> failure x
+  SFor stm1 exp1 exp2 stm2 -> failure x
+  SDoWhile stm exp -> failure x
   SBlock stms -> failure x
   SIf exp stm -> failure x
   SIfElse exp stm1 stm2 -> failure x
   SMethod type_ id args stm -> failure x
-  STypeDef type_ -> failure x
+  STypDef type_ -> failure x
   SStruct id decls -> failure x
-  SDoWhi stm exp -> failure x
-  SFor stm1 exp1 exp2 stm2 -> failure x
 transDecl :: Decl -> Result
 transDecl x = case x of
   DDef type_ ids -> failure x
@@ -54,20 +54,20 @@ transInit x = case x of
   IDef type_ id exp -> failure x
 transType :: Type -> Result
 transType x = case x of
-  TypInt -> failure x
-  TypBool -> failure x
-  TypVoid -> failure x
-  TypDoub -> failure x
-  TypQC qconst -> failure x
+  TInt -> failure x
+  TBool -> failure x
+  TVoid -> failure x
+  TDouble -> failure x
+  TQConst qconst -> failure x
   TCons type_ -> failure x
-  TypRef type_ -> failure x
+  TAmp type_ -> failure x
 transQConst :: QConst -> Result
 transQConst x = case x of
   QDef elmts -> failure x
 transElmt :: Elmt -> Result
 transElmt x = case x of
-  NElmt id -> failure x
-  NElntt id types -> failure x
+  NId id -> failure x
+  NBrac id types -> failure x
 transExp :: Exp -> Result
 transExp x = case x of
   EThrow exp -> failure x

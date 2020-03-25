@@ -10,16 +10,16 @@ data Program = PDefs [Def]
   deriving (Eq, Ord, Show, Read)
 
 data Def
-    = DFunc Type Id [Arg] [Stm]
-    | DFInline Type Id [Arg] [Stm]
+    = DFun Type Id [Arg] [Stm]
+    | DFunc Type Id [Type]
+    | DFunIL Type Id [Arg] [Stm]
+    | DFuncIL Type Id [Type]
     | DDecl Decl
-    | DUse QConst
-    | DTemp Type Id [Type]
-    | DTInline Type Id [Type]
     | DMain Type [Arg] [Stm]
-    | DAlias Type Id
     | DInit Init
     | DStruct Id [Decl]
+    | DUsing QConst
+    | DTypDef Type Id
   deriving (Eq, Ord, Show, Read)
 
 data Arg = ADecl Type Id
@@ -29,17 +29,17 @@ data Stm
     = SExp Exp
     | SDecl Decl
     | SInit Init
-    | SReturn Exp
-    | SReturnVoid
     | SWhile Exp Stm
     | SFor Stm Exp Exp Stm
-    | SDo Stm Exp
+    | SDoWhile Stm Exp
     | SBlock [Stm]
     | SIf Exp Stm
     | SIfElse Exp Stm Stm
     | SMethod Type Id [Arg] Stm
-    | SAlias Type
+    | STypDef Type
     | SStruct Id [Decl]
+    | SReturn Exp
+    | SReturnVoid
   deriving (Eq, Ord, Show, Read)
 
 data Decl = DDef Type [Id]
@@ -49,59 +49,59 @@ data Init = IDef Type Id Exp
   deriving (Eq, Ord, Show, Read)
 
 data Type
-    = TInt
-    | TBool
-    | TVoid
-    | TDouble
-    | TQConst QConst
+    = TAmp Type
     | TCons Type
-    | TAmp Type
+    | TQConst QConst
+    | TVoid
+    | TInt
+    | TDouble
+    | TBool
   deriving (Eq, Ord, Show, Read)
 
-data QConst = QDef [Name]
+data QConst = QDef [Elmt]
   deriving (Eq, Ord, Show, Read)
 
-data Name = NId Id | NBrac Id [Type]
+data Elmt = NId Id | NBrac Id [Type]
   deriving (Eq, Ord, Show, Read)
 
 data Exp
-    = ETrue
+    = EThrow Exp
+    | ECondit Exp Exp Exp
+    | EPlusEq Exp Exp
+    | EMinEq Exp Exp
+    | EAss Exp Exp
+    | EOr Exp Exp
+    | EAnd Exp Exp
+    | ENEq Exp Exp
+    | EEq Exp Exp
+    | EGEq Exp Exp
+    | ELEq Exp Exp
+    | EGt Exp Exp
+    | ELt Exp Exp
+    | ERShift Exp Exp
+    | ELShift Exp [Exp]
+    | EMinus Exp Exp
+    | EPlus Exp Exp
+    | EMod Exp Exp
+    | EDiv Exp Exp
+    | ETimes Exp Exp
+    | ENegBool Exp
+    | EDecr Exp
+    | EIncr Exp
+    | EPointer Exp
+    | EPostDecr Exp
+    | EPostIncr Exp
+    | EAssPointer Exp Exp
+    | ERefCall Exp Exp
+    | EArray Exp Exp
+    | ECall Exp [Exp]
+    | EQConst QConst
+    | ETrue
     | EFalse
-    | EInt Integer
-    | EDouble Double
     | EString [String]
     | EChar Char
-    | EQConst QConst
-    | EArray Exp Exp
-    | EFunc Exp [Exp]
-    | EDot Exp Exp
-    | EPIncr Exp
-    | EPDecr Exp
-    | EDeref Exp
-    | EArrow Exp Exp
-    | EIncr Exp
-    | EDecr Exp
-    | ENot Exp
-    | ETimes Exp Exp
-    | EDiv Exp Exp
-    | EMod Exp Exp
-    | EPlus Exp Exp
-    | EMinus Exp Exp
-    | ECout Exp [Exp]
-    | ECin Exp Exp
-    | ELt Exp Exp
-    | EGt Exp Exp
-    | ELtEq Exp Exp
-    | EGtEq Exp Exp
-    | EEq Exp Exp
-    | ENEq Exp Exp
-    | EAnd Exp Exp
-    | EOr Exp Exp
-    | EAss Exp Exp
-    | EAssA Exp Exp
-    | EAssM Exp Exp
-    | EIf Exp Exp Exp
-    | EThrow Exp
+    | EInteger Integer
+    | EDouble Double
     | ETyped Exp Type
   deriving (Eq, Ord, Show, Read)
 
