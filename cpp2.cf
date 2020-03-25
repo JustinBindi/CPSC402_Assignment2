@@ -63,11 +63,11 @@ NoContd.  Contd ::= ;
 
 STypDef. Stm ::= "typedef" Type Id ";" ;
 
-ECondit.     Exp1  ::= Exp  "?"  Exp2 ":" Exp2 ;
-EExcept.     Exp2  ::= "throw" Exp             ;
-EPlusEq.     Exp2  ::= Exp3  "+=" Exp2         ;
-EMinEq.      Exp2  ::= Exp3  "-=" Exp2         ;
-EAss.        Exp2  ::= Exp3  "="  Exp2         ;
+EThrow.      Exp1  ::= "throw" Exp2 ;
+ECondit.     Exp2  ::= Exp2  "?"  Exp3 ":" Exp3 ;
+EPlusEq.     Exp2  ::= Exp2  "+=" Exp3         ;
+EMinEq.      Exp2  ::= Exp2  "-=" Exp3         ;
+EAss.        Exp2  ::= Exp2  "="  Exp3         ;
 EOr.         Exp3  ::= Exp3  "||" Exp4         ;
 EAnd.        Exp4  ::= Exp4  "&&" Exp5         ;
 ENEq.        Exp8  ::= Exp8  "!=" Exp9         ;
@@ -77,39 +77,43 @@ ELEq.        Exp9  ::= Exp9  "<=" Exp10        ;
 EGt.         Exp9  ::= Exp9  ">"  Exp10        ;
 ELt.         Exp9  ::= Exp9  "<"  Exp10        ;
 ERShift.     Exp10 ::= Exp10 ">>" Exp11        ;
-ELShift.     Exp10 ::= Exp10 "<<" Exp11        ;
+ELShift.     Exp10 ::= Exp10 "<<" [Exp11]      ;
 EMinus.      Exp11 ::= Exp11 "-"  Exp12        ;
 EPlus.       Exp11 ::= Exp11 "+"  Exp12        ;
-EMod.        Exp12 ::= Exp13 "%"  Exp12        ;
+EMod.        Exp12 ::= Exp12 "%"  Exp13        ;
 EDiv.        Exp12 ::= Exp12 "/"  Exp13        ;
 ETimes.      Exp12 ::= Exp12 "*"  Exp13        ;
 EPointer.    Exp13 ::= "*"  Exp13              ;
-ENegBool.    Exp13 ::= "!"  Exp13              ;
+ENegBool.    Exp13 ::= "!"  Exp14              ;
 ENegInt.     Exp13 ::= "-"  Exp13              ;
-EDecr.       Exp13 ::= "--" Exp13              ;
-EIncr.       Exp13 ::= "++" Exp13              ;
+EDecr.       Exp13 ::= "--" Exp14              ;
+EIncr.       Exp13 ::= "++" Exp14              ;
 EAssPointer. Exp14 ::= Exp14 "->" Exp15        ;
 ERefCall.    Exp14 ::= Exp14 "."  Exp15        ;
-EArray.      Exp14 ::= Exp14 "["  Exp  "]"     ;
-ECall.       Exp14 ::= Exp14 "(" [Exp] ")"     ;
-EPostDecr.   Exp14 ::= Exp14 "--"              ;
-EPostIncr.   Exp14 ::= Exp14 "++"              ;
-EQConst.     Exp15 ::= QConst                  ;
-ETrue.       Exp15 ::= "true"                  ;
-EFalse.      Exp15 ::= "false"                 ;
-EString.     Exp15 ::= [String]                ;
-EChar.       Exp15 ::= Char                    ;
-EInt.        Exp15 ::= Integer                 ;
-EDouble.     Exp15 ::= Double                  ;
-EPred.       Exp15 ::= Type Type               ;
-internal ETyped. Exp15 ::= "(" Exp ":" Type ")" ;
+EArray.      Exp15 ::= Exp16 "["  Exp11  "]"     ;
+ECall.       Exp15 ::= Exp16 "(" [Exp3] ")"     ;
+EPostDecr.   Exp14 ::= Exp15 "--"              ;
+EPostIncr.   Exp14 ::= Exp15 "++"              ;
+
+EQConst.     Exp16 ::= QConst                  ;
+ETrue.       Exp16 ::= "true"                  ;
+EFalse.      Exp16 ::= "false"                 ;
+EString.     Exp16 ::= [String]                ;
+EChar.       Exp16 ::= Char                    ;
+EInt.        Exp16 ::= Integer                 ;
+EDouble.     Exp16 ::= Double                  ;
+EPred.       Exp16 ::= Type Type               ;
+
+internal ETyped. Exp16 ::= "(" Exp ":" Type ")" ;
 
 
-coercions Exp 15 ;
+coercions Exp 16 ;
 
-separator Exp "," ;
+separator Exp3 "," ;
 
+separator nonempty Exp11 "" ;
 
+separator nonempty String "" ;
 
 
 
