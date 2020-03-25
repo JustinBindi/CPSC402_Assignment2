@@ -53,12 +53,12 @@ TAmp.      Type1 ::= Type2 "&" ;
 separator Type "," ;
 coercions Type 3 ;
 
-QDef.      QConst ::= [Name] ;
+QDef.      QConst ::= [Elmt] ;
 
-NId.	   Name ::= Id ;
-NBrac.     Name ::= Id "<" [Type] ">" ;
+NId.	   Elmt ::= Id ;
+NBrac.     Elmt ::= Id "<" [Type] ">" ;
 
-separator nonempty Name "::" ;
+separator nonempty Elmt "::" ;
 
 EThrow.      Exp1  ::= "throw" Exp2 ;
 
