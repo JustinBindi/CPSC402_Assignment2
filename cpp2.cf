@@ -124,7 +124,6 @@ separator nonempty Exp11 "" ;
 
 
 TypInt.  Type3 ::= "int"   ;
-TypChar. Type3 ::= "char"  ;
 TypBool. Type3 ::= "bool"  ;
 TypVoid. Type3 ::= "void"  ;
 TypDoub. Type3 ::= "double";
